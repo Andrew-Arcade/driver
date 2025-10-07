@@ -12,7 +12,7 @@ namespace ONYX
             string appsFolder = Path.Combine(Application.dataPath, "..", "..");
 
             // Modify the launch command.
-            string moddedLaunchCommand = _launchCommand.Replace("{appsdur}", appsFolder);
+            string moddedLaunchCommand = _launchCommand.Replace("{appsdir}", appsFolder);
 
             // Prepare the final command.
             string command = moddedLaunchCommand + " && box64 " + appsFolder + "/driver/driver.x86_64";
