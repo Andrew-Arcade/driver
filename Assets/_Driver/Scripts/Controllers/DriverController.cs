@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using ONYX;
+using System.IO;
 
 public class DriverController : MonoBehaviour
 {
@@ -107,26 +108,25 @@ public class DriverController : MonoBehaviour
 
     private void LoadApps()
     {
-        string dataPath = "Apps/apps";
+        string jsonPath = Path.Combine(Application.dataPath, "..", "..", "data", "apps.json");
 
-        TextAsset jsonFile = Resources.Load<TextAsset>(dataPath);
-
-        if (jsonFile != null)
+        if (!File.Exists(jsonPath))
         {
-            AppProfileList appsList = JsonUtility.FromJson<AppProfileList>(jsonFile.text);
+            Debug.LogWarning($"Apps JSON not found at {jsonPath}");
+            return;
+        }
 
-            if (appsList != null && appsList.apps != null)
-            {
-                appProfiles.AddRange(appsList.apps);
-            }
-            else
-            {
-                UnityEngine.Debug.LogWarning("Failed to parse apps.json");
-            }
+        string jsonText = File.ReadAllText(jsonPath);
+        AppProfileList appsList = JsonUtility.FromJson<AppProfileList>(jsonText);
+
+        if (appsList != null && appsList.apps != null)
+        {
+            appProfiles.AddRange(appsList.apps);
+            Debug.Log($"Loaded {appProfiles.Count} apps from {jsonPath}");
         }
         else
         {
-            UnityEngine.Debug.LogWarning("Failed to load apps.json");
+            Debug.LogWarning("Failed to parse apps.json");
         }
     }
 
