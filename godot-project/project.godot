@@ -10,9 +10,11 @@ config_version=5
 
 [application]
 
-config/name="godot-project"
+config/name="driver"
+config/description="Driver app for Andrew Arcade."
+config/version="0.1"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://jkcq88qkwra1"
 
 [physics]
 
