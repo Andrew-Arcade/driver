@@ -1,6 +1,6 @@
 extends Control
 
-const MASTER_LIST_URL = "https://raw.githubusercontent.com/Andrew-Arcade/driver/godot/applications.json"
+const MASTER_LIST_URL = "https://raw.githubusercontent.com/Andrew-Arcade/driver/main/cabinets.json"
 
 @onready var list_node = $ItemList
 
