@@ -53,8 +53,10 @@ if [ -f "/andrewarcade/driver/scripts/launch.sh" ]; then
     mkdir -p /var/lib/dietpi/dietpi-autostart
     echo "sudo /andrewarcade/driver/scripts/launch.sh" > /var/lib/dietpi/dietpi-autostart/custom.sh
     chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
-    # Set DietPi to use Custom Script (Index 14) — creates the systemd service
-    /boot/dietpi/dietpi-autostart 14
+    # Set autologin user to arcade (dietpi-autostart reads this from dietpi.txt)
+    sed -i 's/^AUTO_SETUP_AUTOSTART_LOGIN_USER=.*/AUTO_SETUP_AUTOSTART_LOGIN_USER=arcade/' /boot/dietpi.txt
+    # Set DietPi to use Custom Script foreground with autologin (Index 17)
+    /boot/dietpi/dietpi-autostart 17
 else
     echo "ERROR: launch.sh not found! Please check your repo structure."
     exit 1
