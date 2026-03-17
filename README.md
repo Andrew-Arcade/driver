@@ -1,4 +1,12 @@
-# Andrew Arcade — Driver
+# Driver
+
+> I put stuff on the main branch but it is not at a working state right now lol suck it up.
+
+Run this to setup your Andrew Arcade device.
+
+```curl -sSL https://raw.githubusercontent.com/Andrew-Arcade/driver/main/scripts/setup.sh | sudo bash```
+
+<!-- # Andrew Arcade — Driver
 
 Andrew Arcade is an open-source game console built on Raspberry Pi 5. The **driver** is the launcher app — it manages and launches games/apps from a central registry. Built with Godot 4.6 (GDScript, Forward Plus renderer, Jolt Physics), rewritten in Godot for native arm64 support.
 
@@ -97,4 +105,4 @@ When `launch.arch` is `x86_64`, the driver prepends `box64` to the launch comman
 
 ## License
 
-Open source. See individual app repos for their respective licenses.
+Open source. See individual app repos for their respective licenses. -->

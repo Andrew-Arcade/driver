@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_DIR="godot-project"
+PROJECT_DIR="./godot-project"
 GODOT="godot"
 
 # Read project name and version from project.godot
