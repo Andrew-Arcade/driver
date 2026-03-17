@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dssn0vmw04apo"]
+
+[ext_resource type="Texture2D" uid="uid://jkcq88qkwra1" path="res://icon.png" id="1_73b3n"]
+
+[node name="Coverflow" type="Node3D" unique_id=1501388746]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=306760385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="AppCard" type="Node3D" parent="." unique_id=608871965]
+
+[node name="Sprite3D" type="Sprite3D" parent="AppCard" unique_id=1044184589]
+texture = ExtResource("1_73b3n")
+
+[node name="Label3D" type="Label3D" parent="AppCard" unique_id=2055866570]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+text = "Test Text Here"
+
+[node name="Label3D2" type="Label3D" parent="AppCard" unique_id=2005059974]
