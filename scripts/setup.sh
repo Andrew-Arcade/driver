@@ -12,36 +12,55 @@ apt update && apt install -y \
     libx11-6 libxcursor1 libxinerama1 libxrandr2 \
     libvulkan1 libasound2 alsa-utils mesa-vulkan-drivers
 
-# 2. USER
+# 2. DIRECTORY & REPO MANAGEMENT
+# This ensures the folder exists and the code is present before we try to chmod it.
+mkdir -p /andrewarcade
+
+if [ ! -d "/andrewarcade/driver" ]; then
+    echo "Directory /andrewarcade/driver not found. Cloning from main..."
+    git clone https://github.com/Andrew-Arcade/driver.git /andrewarcade/driver
+else
+    echo "Driver folder exists. Pulling latest from main..."
+    cd /andrewarcade/driver && git pull origin main
+fi
+
+# 3. USER
 USER="arcade"
 if id "$USER" &>/dev/null; then
     echo "User '$USER' already exists."
 else
     echo "Creating user '$USER'..."
     useradd -m -s /bin/bash "$USER"
+    # Sets default password to 'arcade'
     echo "$USER:$USER" | chpasswd
 fi
 
-# Add user to required hardware groups
+# Add user to required hardware groups for graphics/input
 usermod -aG video,audio,input,render,seat "$USER"
 
-# 3. PERMISSIONS
+# 4. PERMISSIONS
 echo "Setting up sudoers bypass..."
+# This allows the arcade user to run the launch script as root without a password
 echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh" > /etc/sudoers.d/arcade
 
-# 4. DIETPI AUTOSTART
+# 5. DIETPI AUTOSTART
 echo "Configuring DietPi autostart..."
-# Set DietPi to use Custom Script (14) and our user
+# Set DietPi to use Custom Script (Index 14)
 sed -i 's/^AUTO_SETUP_AUTOSTART_TARGET_INDEX=.*/AUTO_SETUP_AUTOSTART_TARGET_INDEX=14/' /boot/dietpi.txt
 echo "$USER" > /var/lib/dietpi/dietpi-autostart/target_user
 
-# Set the custom launch command
-chmod +x "/andrewarcade/driver/scripts/launch.sh"
-echo "sudo /andrewarcade/driver/scripts/launch.sh" > /var/lib/dietpi/dietpi-autostart/custom.sh
-chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
+# Ensure the script is executable now that the repo is cloned
+if [ -f "/andrewarcade/driver/scripts/launch.sh" ]; then
+    chmod +x "/andrewarcade/driver/scripts/launch.sh"
+    echo "sudo /andrewarcade/driver/scripts/launch.sh" > /var/lib/dietpi/dietpi-autostart/custom.sh
+    chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
+else
+    echo "ERROR: launch.sh not found! Please check your repo structure."
+    exit 1
+fi
 
-# 5. DIRECTORY OWNERSHIP
-# Make sure the arcade user owns the driver folder so it can update itself
+# 6. DIRECTORY OWNERSHIP
+# Give the arcade user control over the folder so the driver can manage cabinets
 chown -R "$USER:$USER" /andrewarcade
 
 # END
