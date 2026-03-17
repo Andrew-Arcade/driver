@@ -12,6 +12,9 @@ apt update && apt install -y \
     libx11-6 libxcursor1 libxinerama1 libxrandr2 \
     libvulkan1 libasound2 alsa-utils mesa-vulkan-drivers
 
+# Enable seatd so cage can access DRM/input devices
+systemctl enable seatd
+
 # 2. DIRECTORY & REPO MANAGEMENT
 # This ensures the folder exists and the code is present before we try to chmod it.
 mkdir -p /andrewarcade
