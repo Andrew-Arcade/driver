@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d2s563m8jritt"]
+
+[ext_resource type="Script" uid="uid://chan7qh325sfr" path="res://scenes/cabinet_list.gd" id="1_pl48s"]
+
+[node name="CabinetList" type="Control" unique_id=778039958]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pl48s")
+
+[node name="ItemList" type="ItemList" parent="." unique_id=562951389]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+icon_mode = 0
+fixed_icon_size = Vector2i(64, 64)
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1954653519]
