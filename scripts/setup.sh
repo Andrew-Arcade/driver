@@ -54,7 +54,7 @@ if [ -f "/andrewarcade/driver/scripts/launch.sh" ]; then
     echo "sudo /andrewarcade/driver/scripts/launch.sh" > /var/lib/dietpi/dietpi-autostart/custom.sh
     chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
     # Set DietPi to use Custom Script (Index 14) — creates the systemd service
-    dietpi-autostart 14
+    /boot/dietpi/dietpi-autostart 14
 else
     echo "ERROR: launch.sh not found! Please check your repo structure."
     exit 1
