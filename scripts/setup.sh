@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "---------- Setting Up Andrew Arcade ----------"
-echo "Launcher script v0.1"
+echo "Setup script v0.1"
 
 # 1. PACKAGES
 echo "Installing required packages..."

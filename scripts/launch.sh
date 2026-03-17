@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Launch script v0.1"
 
 # 1. FIX VOLATILE DIRECTORIES
 # These are wiped on every reboot. We recreate them and set permissions.
