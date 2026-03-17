@@ -45,15 +45,16 @@ echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh" > /etc/s
 
 # 5. DIETPI AUTOSTART
 echo "Configuring DietPi autostart..."
-# Set DietPi to use Custom Script (Index 14)
-sed -i 's/^AUTO_SETUP_AUTOSTART_TARGET_INDEX=.*/AUTO_SETUP_AUTOSTART_TARGET_INDEX=14/' /boot/dietpi.txt
-echo "$USER" > /var/lib/dietpi/dietpi-autostart/target_user
 
 # Ensure the script is executable now that the repo is cloned
 if [ -f "/andrewarcade/driver/scripts/launch.sh" ]; then
     chmod +x "/andrewarcade/driver/scripts/launch.sh"
+    # Create custom.sh before calling dietpi-autostart to avoid editor prompt
+    mkdir -p /var/lib/dietpi/dietpi-autostart
     echo "sudo /andrewarcade/driver/scripts/launch.sh" > /var/lib/dietpi/dietpi-autostart/custom.sh
     chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
+    # Set DietPi to use Custom Script (Index 14) — creates the systemd service
+    dietpi-autostart 14
 else
     echo "ERROR: launch.sh not found! Please check your repo structure."
     exit 1
