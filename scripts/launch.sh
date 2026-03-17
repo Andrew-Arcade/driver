@@ -1,4 +1,5 @@
 #!/bin/bash
+
 echo "Launch script v0.1"
 
 # 1. FIX VOLATILE DIRECTORIES
@@ -9,8 +10,10 @@ sudo chmod 700 /run/user/1001
 
 # 2. FIX HARDWARE ACCESS
 # Ensure the seatd socket is accessible for hardware input/output
-sudo chown root:seat /run/seatd.sock
-sudo chmod 770 /run/seatd.sock
+if [ -S /run/seatd.sock ]; then
+    sudo chown root:seat /run/seatd.sock
+    sudo chmod 770 /run/seatd.sock
+fi
 
 # 3. ENVIRONMENT VARIABLES
 export XDG_RUNTIME_DIR=/run/user/1001

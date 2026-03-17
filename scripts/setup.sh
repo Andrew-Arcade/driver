@@ -13,7 +13,9 @@ apt update && apt install -y \
     libvulkan1 libasound2 alsa-utils mesa-vulkan-drivers
 
 # Enable seatd so cage can access DRM/input devices
+groupadd -f seat
 systemctl enable seatd
+systemctl start seatd
 
 # 2. DIRECTORY & REPO MANAGEMENT
 # This ensures the folder exists and the code is present before we try to chmod it.
@@ -65,9 +67,16 @@ else
     exit 1
 fi
 
+if ! grep -q "dtoverlay=vc4-kms-v3d" /boot/config.txt; then
+    echo "Enabling KMS Graphics Driver..."
+    echo "dtoverlay=vc4-kms-v3d" >> /boot/config.txt
+fi
+
 # 6. DIRECTORY OWNERSHIP
 # Give the arcade user control over the folder so the driver can manage cabinets
 chown -R "$USER:$USER" /andrewarcade
+# Ensure arcade can execute the autostart wrapper
+chown arcade:arcade /var/lib/dietpi/dietpi-autostart/custom.sh
 
 # END
 echo "---------- SETUP COMPLETE ----------"
