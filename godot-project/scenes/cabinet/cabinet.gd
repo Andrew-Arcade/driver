@@ -1,6 +1,6 @@
 extends Control
 
-@export var item_data : CabinetData 
+@export var cabinet_data : CabinetData 
 
 @onready var icon_rect : TextureRect = %Icon
 @onready var display_name_label : Label = %Title
@@ -8,8 +8,8 @@ extends Control
 @onready var description_label : Label = %Description
 
 func _ready():
-	if item_data:
-		load_data(item_data)
+	if cabinet_data:
+		load_data(cabinet_data)
 
 func load_data(data: CabinetData):
 	if display_name_label:

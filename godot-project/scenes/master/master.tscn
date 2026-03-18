@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://ddggvmd7tlgu7" path="res://scenes/loaders/arcade_data_loader/arcade_data_loader.tscn" id="1_jlra2"]
 [ext_resource type="PackedScene" uid="uid://df2s7o0yjelkp" path="res://scenes/loaders/cabinet_data_loader/cabinet_data_loader.tscn" id="2_r3sev"]
+[ext_resource type="Script" uid="uid://w0iaumw12vi7" path="res://scenes/master/cabinets_display.gd" id="3_r3sev"]
+[ext_resource type="PackedScene" uid="uid://cp8m7wpprdfu0" path="res://scenes/cabinet/cabinet.tscn" id="4_qik5l"]
 
 [node name="Master" type="Node" unique_id=1514308729]
 
@@ -21,10 +23,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CabinetsDisplay" type="Control" parent="Control" unique_id=18543829]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control" unique_id=238679096]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="CabinetsDisplay" type="VBoxContainer" parent="Control/ScrollContainer" unique_id=613386767]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("3_r3sev")
+cabinet_scene = ExtResource("4_qik5l")
