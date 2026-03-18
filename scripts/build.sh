@@ -14,7 +14,7 @@ mkdir -p "$BUILD_DIR"
 echo "Building $GAME_NAME version $VERSION"
 
 # Get preset names from export_presets.cfg
-PRESETS=$(grep "name=" $PROJECT_DIR/export_presets.cfg | cut -d'"' -f2)
+PRESETS=$(grep "name=" $PROJECT_DIR/core/build_settings/export_presets.cfg | cut -d'"' -f2)
 
 for PRESET in $PRESETS
 do
