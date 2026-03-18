@@ -40,6 +40,7 @@ if [ ! -d "/andrewarcade/driver" ]; then
     success "Repository cloned"
 else
     cd /andrewarcade/driver && git pull origin main 2>&1 | dim
+    chown -R arcade:arcade /andrewarcade/driver 2>/dev/null
     success "Repository updated"
 fi
 

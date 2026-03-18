@@ -21,7 +21,7 @@ success "XDG_RUNTIME_DIR ready"
 
 # Self-update — keep the driver current on every boot
 info "Self-update"
-cd /andrewarcade/driver && git pull origin main 2>&1 | dim
+cd /andrewarcade/driver && sudo -u arcade git pull origin main 2>&1 | dim
 success "Driver up to date"
 
 # Hardware access — ensure seatd socket is accessible for input/output

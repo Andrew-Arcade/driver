@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO: Make this auto set the build number to year.month.day.hour-minute in this format ex: 26.3.18.4-58
+
 # Colors
 GREEN='\033[0;32m'; YELLOW='\033[0;33m'; RED='\033[0;31m'
 BLUE='\033[0;34m'; BOLD='\033[1m'; DIM='\033[2m'; NC='\033[0m'
