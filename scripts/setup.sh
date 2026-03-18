@@ -83,12 +83,24 @@ else
     REQUIRED_OVERLAY="vc4-kms-v3d"
 fi
 
-if ! grep -qE "dtoverlay=${REQUIRED_OVERLAY}" /boot/config.txt; then
-    # Remove any conflicting vc4 KMS overlay before adding the correct one
-    sed -i '/^dtoverlay=vc4-.*kms-v3d/d' /boot/config.txt
-    echo "Enabling KMS overlay: $REQUIRED_OVERLAY"
-    echo "dtoverlay=${REQUIRED_OVERLAY}" >> /boot/config.txt
+# DietPi uses /boot/firmware/config.txt, Raspberry Pi OS uses /boot/config.txt
+if [ -f /boot/firmware/config.txt ]; then
+    BOOT_CONFIG="/boot/firmware/config.txt"
+else
+    BOOT_CONFIG="/boot/config.txt"
 fi
+
+if ! grep -qE "dtoverlay=${REQUIRED_OVERLAY}" "$BOOT_CONFIG"; then
+    # Remove any conflicting vc4 KMS overlay before adding the correct one
+    sed -i '/^dtoverlay=vc4-.*kms-v3d/d' "$BOOT_CONFIG"
+    echo "Enabling KMS overlay: $REQUIRED_OVERLAY"
+    echo "dtoverlay=${REQUIRED_OVERLAY}" >> "$BOOT_CONFIG"
+fi
+
+# Bump GPU memory from DietPi's default 16MB (too low for rendering)
+sed -i 's/^gpu_mem_256=16/gpu_mem_256=64/' "$BOOT_CONFIG"
+sed -i 's/^gpu_mem_512=16/gpu_mem_512=64/' "$BOOT_CONFIG"
+sed -i 's/^gpu_mem_1024=16/gpu_mem_1024=64/' "$BOOT_CONFIG"
 
 # Ensure v3d module is loaded at boot (needed for GPU rendering)
 if ! grep -q "^v3d$" /etc/modules 2>/dev/null; then
