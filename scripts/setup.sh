@@ -100,7 +100,7 @@ fi
 
 # Permissions — allow arcade user to run launch script as root
 info "Setting up permissions"
-echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh" > /etc/sudoers.d/arcade
+echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh, /usr/sbin/reboot" > /etc/sudoers.d/arcade
 success "Sudoers configured"
 
 # Autostart — DietPi custom script boot mode

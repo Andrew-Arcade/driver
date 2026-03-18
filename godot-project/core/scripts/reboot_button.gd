@@ -7,7 +7,7 @@ func _on_pressed() -> void:
 	print("Rebooting system...")
 
 	var output = []
-	var exit_code = OS.execute("systemctl", ["reboot"], output)
+	var exit_code = OS.execute("/usr/bin/sudo", ["/usr/sbin/reboot"], output)
 
 	if exit_code == -1:
 		print("Failed to execute reboot command.")
