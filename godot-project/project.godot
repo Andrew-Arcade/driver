@@ -15,7 +15,7 @@ config/description="Driver app for Andrew Arcade."
 config/version="0.1"
 run/main_scene="uid://cwslsa142xc1f"
 config/features=PackedStringArray("4.6", "Forward Plus")
-boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/use_filter=false
 boot_splash/image="uid://jkcq88qkwra1"
 config/icon="uid://jkcq88qkwra1"
 

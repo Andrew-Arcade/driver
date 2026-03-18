@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://cwslsa142xc1f"]
 
+[ext_resource type="PackedScene" uid="uid://bjlvwrlirjpm" path="res://scenes/host_manager/host_manager.tscn" id="1_bftpt"]
 [ext_resource type="PackedScene" uid="uid://ddggvmd7tlgu7" path="res://scenes/loaders/arcade_data_loader/arcade_data_loader.tscn" id="1_jlra2"]
 [ext_resource type="PackedScene" uid="uid://df2s7o0yjelkp" path="res://scenes/loaders/cabinet_data_loader/cabinet_data_loader.tscn" id="2_r3sev"]
 [ext_resource type="Script" uid="uid://gjkf5xbxft42" path="res://core/scripts/version_label.gd" id="3_cjlqj"]
-[ext_resource type="Script" uid="uid://w0iaumw12vi7" path="res://scenes/master/cabinets_display.gd" id="3_r3sev"]
-[ext_resource type="Script" uid="uid://dkm2wjjkcca7u" path="res://core/scripts/reboot_button.gd" id="3_xl4qa"]
+[ext_resource type="Script" uid="uid://w0iaumw12vi7" path="res://core/scripts/cabinets_display.gd" id="3_r3sev"]
+[ext_resource type="Script" uid="uid://dkm2wjjkcca7u" path="res://core/scripts/buttons/reboot_button.gd" id="3_xl4qa"]
 [ext_resource type="PackedScene" uid="uid://cp8m7wpprdfu0" path="res://scenes/cabinet/cabinet.tscn" id="4_qik5l"]
-[ext_resource type="Script" uid="uid://c8ohlqia4w2ce" path="res://core/scripts/shutdown_button.gd" id="5_2uhh1"]
+[ext_resource type="Script" uid="uid://c8ohlqia4w2ce" path="res://core/scripts/buttons/shutdown_button.gd" id="5_2uhh1"]
+[ext_resource type="Script" uid="uid://cxi3vge08aqph" path="res://core/scripts/buttons/update_button.gd" id="6_bftpt"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qik5l"]
 font_size = 32
@@ -20,6 +22,9 @@ outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
 [node name="Master" type="Node" unique_id=1514308729]
+
+[node name="HostManager" parent="." unique_id=1290977018 instance=ExtResource("1_bftpt")]
+unique_name_in_owner = true
 
 [node name="DataLoaders" type="Node" parent="." unique_id=1387598701]
 
@@ -101,6 +106,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Reboot"
 script = ExtResource("3_xl4qa")
+
+[node name="Update" type="Button" parent="Control/VBoxContainer/Control/HBoxContainer/VBoxContainer2" unique_id=948694774]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Update"
+script = ExtResource("6_bftpt")
 
 [node name="Shutdown" type="Button" parent="Control/VBoxContainer/Control/HBoxContainer/VBoxContainer2" unique_id=1870450067]
 layout_mode = 2
