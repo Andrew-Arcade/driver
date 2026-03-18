@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cwslsa142xc1f"]
+
+[ext_resource type="PackedScene" uid="uid://ddggvmd7tlgu7" path="res://scenes/loaders/arcade_data_loader/arcade_data_loader.tscn" id="1_jlra2"]
+[ext_resource type="PackedScene" uid="uid://df2s7o0yjelkp" path="res://scenes/loaders/cabinet_data_loader/cabinet_data_loader.tscn" id="2_r3sev"]
+
+[node name="Master" type="Node" unique_id=1514308729]
+
+[node name="DataLoaders" type="Node" parent="." unique_id=1387598701]
+
+[node name="ArcadeDataLoader" parent="DataLoaders" unique_id=1122111625 instance=ExtResource("1_jlra2")]
+unique_name_in_owner = true
+
+[node name="CabinetDataLoader" parent="DataLoaders" unique_id=1799596550 instance=ExtResource("2_r3sev")]
+unique_name_in_owner = true
+
+[node name="Control" type="Control" parent="." unique_id=1145333238]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CabinetsDisplay" type="Control" parent="Control" unique_id=18543829]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
