@@ -10,6 +10,8 @@ func _shutdown() -> void:
 
 func _reboot() -> void:
 	print("Rebooting system...")
+	
+	Shell.command("/usr/bin/sudo /usr/bin")
 
 	var output = []
 	var exit_code = OS.execute("/usr/bin/sudo", ["/usr/bin/systemctl", "reboot"], output)
