@@ -1,81 +1,67 @@
 #!/bin/bash
 
-echo "---------- Setting Up Andrew Arcade ----------"
-echo "Setup script v1"
+# Colors
+GREEN='\033[0;32m'; YELLOW='\033[0;33m'; RED='\033[0;31m'
+BLUE='\033[0;34m'; BOLD='\033[1m'; DIM='\033[2m'; NC='\033[0m'
 
-# 1. PACKAGES
-echo "Installing required packages..."
+info()    { echo -e "\n${BLUE}${BOLD}:: ${1}${NC}"; }
+success() { echo -e "${GREEN}   ✓ ${1}${NC}"; }
+warn()    { echo -e "${YELLOW}   ! ${1}${NC}"; }
+error()   { echo -e "${RED}   ✗ ${1}${NC}"; }
+dim()     { while IFS= read -r line; do echo -e "${DIM}   ${line}${NC}"; done; }
+
+echo -e "\n${BOLD}Andrew Arcade — Setup${NC}\n"
+
+# Packages — system dependencies for Wayland, GPU, audio, and emulation
+info "Installing packages"
 apt update && apt install -y \
     dbus git sudo cage seatd xwayland box64 \
     libwayland-client0 libwayland-cursor0 libwayland-egl1 \
     libxfixes3 libxi6 libxkbcommon0 libfontconfig1 \
     libx11-6 libxcursor1 libxinerama1 libxrandr2 \
-    libvulkan1 libasound2 alsa-utils mesa-vulkan-drivers
+    libvulkan1 libasound2 alsa-utils mesa-vulkan-drivers 2>&1 | dim
+success "Packages installed"
 
-# Check kernel has GPU module available
 if ! modinfo v3d &>/dev/null; then
-    echo "WARNING: v3d kernel module not found. Run: dietpi-update"
+    warn "v3d kernel module not found — run: dietpi-update"
 fi
 
-# Enable seatd so cage can access DRM/input devices
 groupadd -f seat
-systemctl enable seatd
-systemctl start seatd
+systemctl enable seatd 2>&1 | dim
+systemctl start seatd 2>&1 | dim
+success "seatd enabled"
 
-# 2. DIRECTORY & REPO MANAGEMENT
-# This ensures the folder exists and the code is present before we try to chmod it.
+# Repository — clone or update the driver
+info "Setting up repository"
 mkdir -p /andrewarcade
 
 if [ ! -d "/andrewarcade/driver" ]; then
-    echo "Directory /andrewarcade/driver not found. Cloning from main..."
-    git clone https://github.com/Andrew-Arcade/driver.git /andrewarcade/driver
+    git clone https://github.com/Andrew-Arcade/driver.git /andrewarcade/driver 2>&1 | dim
+    success "Repository cloned"
 else
-    echo "Driver folder exists. Pulling latest from main..."
-    cd /andrewarcade/driver && git pull origin main
+    cd /andrewarcade/driver && git pull origin main 2>&1 | dim
+    success "Repository updated"
 fi
 
-# 3. USER
+# User — create arcade user with hardware group access
+info "Configuring user"
 USER="arcade"
 if id "$USER" &>/dev/null; then
-    echo "User '$USER' already exists."
+    success "User '$USER' already exists"
 else
-    echo "Creating user '$USER'..."
     useradd -m -s /bin/bash "$USER"
-    # Sets default password to 'arcade'
     echo "$USER:$USER" | chpasswd
+    success "User '$USER' created"
 fi
 
-# Add user to required hardware groups for graphics/input
 usermod -aG video,audio,input,render,seat "$USER"
+success "Hardware groups assigned"
 
-# 4. PERMISSIONS
-echo "Setting up sudoers bypass..."
-# This allows the arcade user to run the launch script as root without a password
-echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh" > /etc/sudoers.d/arcade
+# GPU config — KMS overlay, memory, and kernel module
+info "Configuring GPU"
 
-# 5. DIETPI AUTOSTART
-echo "Configuring DietPi autostart..."
-
-# Ensure the script is executable now that the repo is cloned
-
-if [ -f "/andrewarcade/driver/scripts/launch.sh" ]; then
-    chmod +x "/andrewarcade/driver/scripts/launch.sh"
-    # Create custom.sh before calling dietpi-autostart to avoid editor prompt
-    mkdir -p /var/lib/dietpi/dietpi-autostart
-    echo "sudo /andrewarcade/driver/scripts/launch.sh" > /var/lib/dietpi/dietpi-autostart/custom.sh
-    chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
-    # Set autologin user to arcade (dietpi-autostart reads this from dietpi.txt)
-    sed -i 's/^AUTO_SETUP_AUTOSTART_LOGIN_USER=.*/AUTO_SETUP_AUTOSTART_LOGIN_USER=arcade/' /boot/dietpi.txt
-    # Set DietPi to use Custom Script foreground with autologin (Index 17)
-    /boot/dietpi/dietpi-autostart 17
-else
-    echo "ERROR: launch.sh not found! Please check your repo structure."
-    exit 1
-fi
-
-# Detect Pi model and apply correct KMS overlay
 PI_MODEL=$(cat /proc/device-tree/model 2>/dev/null || echo "unknown")
-echo "Detected board: $PI_MODEL"
+success "Detected board: $PI_MODEL"
 
 if echo "$PI_MODEL" | grep -qi "pi 5"; then
     REQUIRED_OVERLAY="vc4-kms-v3d-pi5"
@@ -91,32 +77,56 @@ else
 fi
 
 if ! grep -qE "dtoverlay=${REQUIRED_OVERLAY}" "$BOOT_CONFIG"; then
-    # Remove any conflicting vc4 KMS overlay before adding the correct one
     sed -i '/^dtoverlay=vc4-.*kms-v3d/d' "$BOOT_CONFIG"
-    echo "Enabling KMS overlay: $REQUIRED_OVERLAY"
     echo "dtoverlay=${REQUIRED_OVERLAY}" >> "$BOOT_CONFIG"
+    success "KMS overlay enabled: $REQUIRED_OVERLAY"
+else
+    success "KMS overlay already set"
 fi
 
-# Bump GPU memory from DietPi's default 16MB (too low for rendering)
+# DietPi defaults gpu_mem to 16MB — too low for rendering
 sed -i 's/^gpu_mem_256=16/gpu_mem_256=64/' "$BOOT_CONFIG"
 sed -i 's/^gpu_mem_512=16/gpu_mem_512=64/' "$BOOT_CONFIG"
 sed -i 's/^gpu_mem_1024=16/gpu_mem_1024=64/' "$BOOT_CONFIG"
+success "GPU memory bumped to 64MB"
 
-# Ensure v3d module is loaded at boot (needed for GPU rendering)
+# Load v3d at boot for GPU rendering
 if ! grep -q "^v3d$" /etc/modules 2>/dev/null; then
-    echo "Adding v3d to /etc/modules for boot loading..."
     echo "v3d" >> /etc/modules
+    success "v3d added to /etc/modules"
+else
+    success "v3d already in /etc/modules"
 fi
 
-# 6. DIRECTORY OWNERSHIP
-# Give the arcade user control over the folder so the driver can manage cabinets
-chown -R "$USER:$USER" /andrewarcade
-# Ensure arcade can execute the autostart wrapper
-chown arcade:arcade /var/lib/dietpi/dietpi-autostart/custom.sh
+# Permissions — allow arcade user to run launch script as root
+info "Setting up permissions"
+echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh" > /etc/sudoers.d/arcade
+success "Sudoers configured"
 
-# END
-echo "---------- SETUP COMPLETE ----------"
-echo "The system will reboot and launch the driver automatically."
-echo "Restarting in 5 seconds..."
+# Autostart — DietPi custom script boot mode
+info "Configuring autostart"
+
+if [ -f "/andrewarcade/driver/scripts/launch.sh" ]; then
+    chmod +x "/andrewarcade/driver/scripts/launch.sh"
+    mkdir -p /var/lib/dietpi/dietpi-autostart
+    echo "sudo /andrewarcade/driver/scripts/launch.sh" > /var/lib/dietpi/dietpi-autostart/custom.sh
+    chmod +x /var/lib/dietpi/dietpi-autostart/custom.sh
+    sed -i 's/^AUTO_SETUP_AUTOSTART_LOGIN_USER=.*/AUTO_SETUP_AUTOSTART_LOGIN_USER=arcade/' /boot/dietpi.txt
+    /boot/dietpi/dietpi-autostart 17
+    success "Autostart configured (mode 17)"
+else
+    error "launch.sh not found — check repo structure"
+    exit 1
+fi
+
+# Ownership — give arcade user control for managing cabinets
+info "Setting ownership"
+chown -R "$USER:$USER" /andrewarcade
+chown arcade:arcade /var/lib/dietpi/dietpi-autostart/custom.sh
+success "Ownership set"
+
+echo -e "\n${GREEN}${BOLD}Setup complete!${NC}"
+echo -e "The system will reboot and launch the driver automatically."
+echo -e "Restarting in 5 seconds...\n"
 sleep 5
 reboot
