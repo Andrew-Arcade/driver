@@ -31,4 +31,4 @@ func _http_request_completed(_result, _response_code, _headers, body, request_no
 	
 	is_loading = false
 	data_loaded.emit(cached_data)
-	print("Arcade Data Globally Loaded!")
+	GlobalLogger.info("Arcade Data Globally Loaded!")

@@ -25,6 +25,7 @@ ArcadeDataManager="*uid://pvquo6jj324b"
 CabinetDataManager="*uid://mi32583xltfm"
 HostManager="*uid://dqlbscx5r6rjh"
 Shell="*uid://dmbvoh0rxv47d"
+GlobalLogger="*uid://byvei43lns4a"
 
 [physics]
 

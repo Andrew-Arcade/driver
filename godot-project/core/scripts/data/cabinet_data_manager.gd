@@ -23,7 +23,7 @@ func _on_arcade_data_received(data: ArcadeData) -> void:
 	cached_cabinets = cabinets
 	is_loading = false
 	all_cabinets_loaded.emit(cached_cabinets)
-	print("All Cabinet Data cached globally!")
+	GlobalLogger.info("All Cabinet Data cached globally!")
 
 func _fetch_cabinet(url: String) -> CabinetData:
 	var http = HTTPRequest.new()

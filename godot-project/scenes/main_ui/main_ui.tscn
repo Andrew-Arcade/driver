@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://b2jyuoxjnmkck"]
 
+[ext_resource type="Script" uid="uid://bgd7dof36bmhc" path="res://core/scripts/log_getter.gd" id="1_4kns6"]
 [ext_resource type="PackedScene" uid="uid://b3tbjjq6w73xy" path="res://scenes/title_bar/title_bar.tscn" id="1_82ck7"]
 [ext_resource type="PackedScene" uid="uid://cbj6qwgsnc0jj" path="res://scenes/cabinets_display/cabinets_display.tscn" id="2_4kns6"]
 
@@ -10,6 +11,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
+
+[node name="Control" type="Control" parent="." unique_id=1147561794]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("1_4kns6")
 
 [node name="TitleBar" parent="." unique_id=1386892992 instance=ExtResource("1_82ck7")]
 layout_mode = 2
