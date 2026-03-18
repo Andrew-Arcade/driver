@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b2jyuoxjnmkck"]
+
+[ext_resource type="PackedScene" uid="uid://b3tbjjq6w73xy" path="res://scenes/title_bar/title_bar.tscn" id="1_82ck7"]
+[ext_resource type="PackedScene" uid="uid://cbj6qwgsnc0jj" path="res://scenes/cabinets_display/cabinets_display.tscn" id="2_4kns6"]
+
+[node name="MainUI" type="VBoxContainer" unique_id=845735443]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TitleBar" parent="." unique_id=1386892992 instance=ExtResource("1_82ck7")]
+layout_mode = 2
+
+[node name="CabinetsDisplay" parent="." unique_id=1747438508 instance=ExtResource("2_4kns6")]
+layout_mode = 2

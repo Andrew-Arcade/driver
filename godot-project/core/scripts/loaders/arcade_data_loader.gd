@@ -2,12 +2,18 @@ extends Node
 
 signal data_loaded(data: ArcadeData)
 
+var cached_data: ArcadeData = null
+var is_loading: bool = false
+
 @export var url : String = "https://raw.githubusercontent.com/Andrew-Arcade/driver/main/arcade.json"
 
 func _ready() -> void:
-	_fetch_arcade()
+	fetch_arcade()
 
-func _fetch_arcade() -> void:
+func fetch_arcade() -> void:
+	if is_loading: return
+	is_loading = true
+	
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
 	http_request.request_completed.connect(
@@ -20,7 +26,9 @@ func _http_request_completed(_result, _response_code, _headers, body, request_no
 	
 	var response = JSON.parse_string(body.get_string_from_utf8())
 	
-	var arcade_data : ArcadeData = ArcadeData.new()
-	arcade_data.arcade.assign(response)
+	cached_data = ArcadeData.new()
+	cached_data.arcade.assign(response)
 	
-	data_loaded.emit(arcade_data)
+	is_loading = false
+	data_loaded.emit(cached_data)
+	print("Arcade Data Globally Loaded!")

@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://bjlvwrlirjpm"]
-
-[ext_resource type="Script" uid="uid://dqlbscx5r6rjh" path="res://scenes/host_manager/host_manager.gd" id="1_0kolw"]
-
-[node name="HostManager" type="Node" unique_id=1290977018]
-script = ExtResource("1_0kolw")

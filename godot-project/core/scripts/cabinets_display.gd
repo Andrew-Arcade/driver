@@ -3,7 +3,7 @@ extends VBoxContainer
 @export var cabinet_scene: PackedScene
 
 func _ready() -> void:
-	%CabinetDataLoader.data_loaded.connect(_on_cabinet_data_loaded)
+	CabinetDataLoader.all_cabinets_loaded.connect(_on_cabinet_data_loaded)
 
 func _on_cabinet_data_loaded(data: Array[CabinetData]) -> void:
 	for cabinet in data:

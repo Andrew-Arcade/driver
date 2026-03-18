@@ -13,11 +13,17 @@ config_version=5
 config/name="driver"
 config/description="Driver app for Andrew Arcade."
 config/version="26.18.3.10-55"
-run/main_scene="uid://cwslsa142xc1f"
+run/main_scene="uid://b2jyuoxjnmkck"
 config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/use_filter=false
 boot_splash/image="uid://jkcq88qkwra1"
 config/icon="uid://jkcq88qkwra1"
+
+[autoload]
+
+ArcadeDataLoader="*uid://pvquo6jj324b"
+CabinetDataLoader="*uid://mi32583xltfm"
+HostManager="*uid://dqlbscx5r6rjh"
 
 [physics]
 
