@@ -18,5 +18,5 @@ func _reboot() -> void:
 
 func _update() -> void:
 	print("Updating driver...")
-	OS.create_process("/usr/bin/setsid", ["/bin/bash", "/andrewarcade/driver/scripts/launch.sh"])
+	OS.create_process("/bin/bash", ["-c", "sleep 3 && /andrewarcade/driver/scripts/launch.sh"])
 	get_tree().quit()
