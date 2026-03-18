@@ -12,6 +12,7 @@ outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_xl4qa"]
+font_size = 14
 font_color = Color(0.89492244, 0.89492244, 0.8949224, 1)
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
