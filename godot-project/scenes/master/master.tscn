@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ddggvmd7tlgu7" path="res://scenes/loaders/arcade_data_loader/arcade_data_loader.tscn" id="1_jlra2"]
 [ext_resource type="PackedScene" uid="uid://df2s7o0yjelkp" path="res://scenes/loaders/cabinet_data_loader/cabinet_data_loader.tscn" id="2_r3sev"]
+[ext_resource type="Script" uid="uid://gjkf5xbxft42" path="res://core/scripts/version_label.gd" id="3_cjlqj"]
 [ext_resource type="Script" uid="uid://w0iaumw12vi7" path="res://scenes/master/cabinets_display.gd" id="3_r3sev"]
 [ext_resource type="Script" uid="uid://dkm2wjjkcca7u" path="res://core/scripts/reboot_button.gd" id="3_xl4qa"]
 [ext_resource type="PackedScene" uid="uid://cp8m7wpprdfu0" path="res://scenes/cabinet/cabinet.tscn" id="4_qik5l"]
@@ -10,6 +11,11 @@
 font_size = 32
 font_color = Color(0.89492244, 0.89492244, 0.8949224, 1)
 outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xl4qa"]
+font_color = Color(0.89492244, 0.89492244, 0.8949224, 1)
+outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
 [node name="Master" type="Node" unique_id=1514308729]
@@ -60,14 +66,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Control/VBoxContainer/Control/HBoxContainer" unique_id=649100427]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/VBoxContainer/Control/HBoxContainer" unique_id=1425297968]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="Control/VBoxContainer/Control/HBoxContainer/VBoxContainer" unique_id=649100427]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "Andrew Arcade"
 label_settings = SubResource("LabelSettings_qik5l")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Version" type="Label" parent="Control/VBoxContainer/Control/HBoxContainer/VBoxContainer" unique_id=1323941423]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "vX.X"
+label_settings = SubResource("LabelSettings_xl4qa")
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("3_cjlqj")
 
 [node name="Button" type="Button" parent="Control/VBoxContainer/Control/HBoxContainer" unique_id=409262997]
 layout_mode = 2
