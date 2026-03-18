@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://w0iaumw12vi7" path="res://scenes/master/cabinets_display.gd" id="3_r3sev"]
 [ext_resource type="Script" uid="uid://dkm2wjjkcca7u" path="res://core/scripts/reboot_button.gd" id="3_xl4qa"]
 [ext_resource type="PackedScene" uid="uid://cp8m7wpprdfu0" path="res://scenes/cabinet/cabinet.tscn" id="4_qik5l"]
+[ext_resource type="Script" uid="uid://c8ohlqia4w2ce" path="res://core/scripts/shutdown_button.gd" id="5_2uhh1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qik5l"]
 font_size = 32
@@ -46,7 +47,7 @@ grow_vertical = 2
 theme_override_constants/separation = 0
 
 [node name="Control" type="Control" parent="Control/VBoxContainer" unique_id=1812168202]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="Control/VBoxContainer/Control" unique_id=447625553]
@@ -83,19 +84,28 @@ vertical_alignment = 1
 [node name="Version" type="Label" parent="Control/VBoxContainer/Control/HBoxContainer/VBoxContainer" unique_id=1323941423]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 1
 text = "vX.X"
 label_settings = SubResource("LabelSettings_xl4qa")
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("3_cjlqj")
 
-[node name="Button" type="Button" parent="Control/VBoxContainer/Control/HBoxContainer" unique_id=409262997]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/VBoxContainer/Control/HBoxContainer" unique_id=642307376]
+layout_mode = 2
+alignment = 1
+
+[node name="Reboot" type="Button" parent="Control/VBoxContainer/Control/HBoxContainer/VBoxContainer2" unique_id=409262997]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-text = "REBOOT"
+text = "Reboot"
 script = ExtResource("3_xl4qa")
+
+[node name="Shutdown" type="Button" parent="Control/VBoxContainer/Control/HBoxContainer/VBoxContainer2" unique_id=1870450067]
+layout_mode = 2
+text = "Shutdown"
+script = ExtResource("5_2uhh1")
 
 [node name="Spacer" type="ColorRect" parent="Control/VBoxContainer" unique_id=98471472]
 custom_minimum_size = Vector2(0, 8)
