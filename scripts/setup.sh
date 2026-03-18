@@ -98,23 +98,14 @@ else
     success "v3d already in /etc/modules"
 fi
 
-# Permissions — allow arcade user to run launch script as root
+# Permissions — allow arcade user to launch and reboot without a password
 info "Setting up permissions"
-echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh" > /etc/sudoers.d/arcade
+cat > /etc/sudoers.d/arcade << SUDOERS
+$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh
+$USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl reboot
+$USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl poweroff
+SUDOERS
 success "Sudoers configured"
-
-# Polkit — allow arcade user to reboot without sudo
-POLKIT_DIR="/etc/polkit-1/localauthority/50-local.d"
-mkdir -p "$POLKIT_DIR"
-cat > "$POLKIT_DIR/arcade-reboot.pkla" << 'POLKIT'
-[Allow arcade to reboot]
-Identity=unix-user:arcade
-Action=org.freedesktop.login1.reboot;org.freedesktop.login1.reboot-multiple-sessions
-ResultAny=yes
-ResultInactive=yes
-ResultActive=yes
-POLKIT
-success "Polkit reboot rule configured"
 
 # Autostart — DietPi custom script boot mode
 info "Configuring autostart"
