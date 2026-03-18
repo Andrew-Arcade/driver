@@ -6,7 +6,7 @@ var cached_cabinets: Array[CabinetData] = []
 var is_loading: bool = false
 
 func _ready() -> void:
-	ArcadeDataLoader.data_loaded.connect(_on_arcade_data_received)
+	ArcadeDataManager.data_loaded.connect(_on_arcade_data_received)
 
 func _on_arcade_data_received(data: ArcadeData) -> void:
 	if is_loading: return

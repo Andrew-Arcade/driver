@@ -21,8 +21,8 @@ config/icon="uid://jkcq88qkwra1"
 
 [autoload]
 
-ArcadeDataLoader="*uid://pvquo6jj324b"
-CabinetDataLoader="*uid://mi32583xltfm"
+ArcadeDataManager="*uid://pvquo6jj324b"
+CabinetDataManager="*uid://mi32583xltfm"
 HostManager="*uid://dqlbscx5r6rjh"
 
 [physics]

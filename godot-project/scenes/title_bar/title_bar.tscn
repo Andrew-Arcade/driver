@@ -14,8 +14,11 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_xl4qa"]
 font_size = 14
 font_color = Color(0.89492244, 0.89492244, 0.8949224, 1)
-outline_size = 5
+outline_size = 4
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilpr6"]
+bg_color = Color(0, 0.2784314, 0.69803923, 1)
 
 [node name="TitleBar" type="Control" unique_id=1386892992]
 custom_minimum_size = Vector2(0, 96)
@@ -33,11 +36,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="Control" type="Control" parent="HBoxContainer" unique_id=1005832627]
+[node name="TextArea" type="Control" parent="HBoxContainer" unique_id=1005832627]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Background" type="ColorRect" parent="HBoxContainer/Control" unique_id=1261241046]
+[node name="Background" type="ColorRect" parent="HBoxContainer/TextArea" unique_id=1261241046]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,7 +51,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 15.0
 color = Color(0, 0.41568628, 1, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Control" unique_id=1537134701]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/TextArea" unique_id=1537134701]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,7 +60,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 
-[node name="Title" type="Label" parent="HBoxContainer/Control/VBoxContainer" unique_id=937498503]
+[node name="Title" type="Label" parent="HBoxContainer/TextArea/VBoxContainer" unique_id=937498503]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -67,7 +70,7 @@ label_settings = SubResource("LabelSettings_qik5l")
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="Version" type="Label" parent="HBoxContainer/Control/VBoxContainer" unique_id=1113364027]
+[node name="Version" type="Label" parent="HBoxContainer/TextArea/VBoxContainer" unique_id=1113364027]
 layout_mode = 2
 size_flags_vertical = 3
 text = "vX.X"
@@ -75,43 +78,35 @@ label_settings = SubResource("LabelSettings_xl4qa")
 horizontal_alignment = 1
 script = ExtResource("1_ilpr6")
 
-[node name="Controls" type="Control" parent="HBoxContainer" unique_id=722684087]
-custom_minimum_size = Vector2(256, 0)
+[node name="ButtonArea" type="PanelContainer" parent="HBoxContainer" unique_id=1821981384]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ilpr6")
 
-[node name="Background" type="ColorRect" parent="HBoxContainer/Controls" unique_id=1122215685]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0.28026104, 0.6964574, 1)
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ButtonArea" unique_id=1730370908]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Controls" unique_id=117189240]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ButtonArea/MarginContainer" unique_id=117189240]
+layout_mode = 2
+theme_override_constants/separation = 5
 alignment = 1
 
-[node name="Reboot" type="Button" parent="HBoxContainer/Controls/HBoxContainer" unique_id=1988035732]
+[node name="Reboot" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1988035732]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Reboot"
 script = ExtResource("2_jag7e")
 
-[node name="Update" type="Button" parent="HBoxContainer/Controls/HBoxContainer" unique_id=1864377460]
+[node name="Update" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1864377460]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Update"
 script = ExtResource("3_ldf6x")
 
-[node name="Shutdown" type="Button" parent="HBoxContainer/Controls/HBoxContainer" unique_id=475547550]
+[node name="Shutdown" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=475547550]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Shutdown"
