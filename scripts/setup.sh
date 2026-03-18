@@ -6,7 +6,7 @@ echo "Setup script v0.1"
 # 1. PACKAGES
 echo "Installing required packages..."
 apt update && apt install -y \
-    git sudo cage seatd xwayland box64 \
+    dbus git sudo cage seatd xwayland box64 \
     libwayland-client0 libwayland-cursor0 libwayland-egl1 \
     libxfixes3 libxi6 libxkbcommon0 libfontconfig1 \
     libx11-6 libxcursor1 libxinerama1 libxrandr2 \
@@ -52,6 +52,7 @@ echo "$USER ALL=(ALL) NOPASSWD: /andrewarcade/driver/scripts/launch.sh" > /etc/s
 echo "Configuring DietPi autostart..."
 
 # Ensure the script is executable now that the repo is cloned
+
 if [ -f "/andrewarcade/driver/scripts/launch.sh" ]; then
     chmod +x "/andrewarcade/driver/scripts/launch.sh"
     # Create custom.sh before calling dietpi-autostart to avoid editor prompt
@@ -67,7 +68,7 @@ else
     exit 1
 fi
 
-if ! grep -q "dtoverlay=vc4-kms-v3d" /boot/config.txt; then
+if ! grep -qE "dtoverlay=vc4-(f)?kms-v3d(-pi[45])?" /boot/config.txt; then
     echo "Enabling KMS Graphics Driver..."
     echo "dtoverlay=vc4-kms-v3d" >> /boot/config.txt
 fi

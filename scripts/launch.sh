@@ -15,20 +15,24 @@ if [ -S /run/seatd.sock ]; then
     sudo chmod 770 /run/seatd.sock
 fi
 
-# 3. ENVIRONMENT VARIABLES
-export XDG_RUNTIME_DIR=/run/user/1001
-export WLR_BACKEND=drm
-export WLR_RENDERER=gles2
-export GODOT_PLATFORM=wayland
-
-# 4. PATHS
+# 3. PATHS
 # Use absolute paths so the script works from any location
 DRIVER_DIR="/andrewarcade/driver/builds/0.1"
 BINARY_NAME="driver 0.1 linux-arm64.arm64"
 
+# 4. DIAGNOSTICS
+echo "DRM devices:" && ls -la /dev/dri/ 2>&1
+echo "seatd status:" && systemctl is-active seatd 2>&1
+
 # 5. LAUNCH
+# Run cage as the arcade user (not root) for proper DRM/seatd access
 # -d: Hide the mouse cursor
 # -s: Allow the compositor to handle server tasks (useful for Pi)
 echo "Launching Andrew Arcade Driver..."
 cd "$DRIVER_DIR"
-/usr/bin/cage -d -s -- "./$BINARY_NAME"
+runuser -u arcade -- env \
+    XDG_RUNTIME_DIR=/run/user/1001 \
+    WLR_BACKEND=drm \
+    WLR_RENDERER=gles2 \
+    GODOT_PLATFORM=wayland \
+    /usr/bin/cage -d -s -- "./$BINARY_NAME"
