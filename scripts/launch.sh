@@ -15,6 +15,11 @@ if [ -S /run/seatd.sock ]; then
     sudo chmod 770 /run/seatd.sock
 fi
 
+# 2.5. SELF-UPDATE
+# Pull latest changes so the driver stays up to date
+echo "Updating driver..."
+cd /andrewarcade/driver && git pull origin main
+
 # 3. PATHS
 # Use absolute paths so the script works from any location
 DRIVER_DIR="/andrewarcade/driver/builds/0.1"
