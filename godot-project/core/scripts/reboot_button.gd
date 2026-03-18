@@ -5,9 +5,9 @@ func _ready() -> void:
 
 func _on_pressed() -> void:
 	print("Rebooting system...")
-	
+
 	var output = []
-	var exit_code = OS.execute("reboot", [], output)
-	
+	var exit_code = OS.execute("systemctl", ["reboot"], output)
+
 	if exit_code == -1:
 		print("Failed to execute reboot command.")
