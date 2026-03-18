@@ -40,8 +40,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -4.0
-offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -81,19 +79,24 @@ size_flags_horizontal = 3
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=1927977699]
 layout_mode = 2
+alignment = 1
 
 [node name="Button" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=650061632]
 layout_mode = 2
 text = "Launch"
 
-[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=2050393110]
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer" unique_id=660646473]
+layout_mode = 2
+alignment = 1
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=607153659]
 layout_mode = 2
 text = "Install"
 
-[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=98402864]
+[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=930667826]
 layout_mode = 2
 text = "Remove"
 
-[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=1722218164]
+[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=1183355785]
 layout_mode = 2
 text = "Update"

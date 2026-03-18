@@ -3,7 +3,14 @@
 [ext_resource type="PackedScene" uid="uid://ddggvmd7tlgu7" path="res://scenes/loaders/arcade_data_loader/arcade_data_loader.tscn" id="1_jlra2"]
 [ext_resource type="PackedScene" uid="uid://df2s7o0yjelkp" path="res://scenes/loaders/cabinet_data_loader/cabinet_data_loader.tscn" id="2_r3sev"]
 [ext_resource type="Script" uid="uid://w0iaumw12vi7" path="res://scenes/master/cabinets_display.gd" id="3_r3sev"]
+[ext_resource type="Script" uid="uid://dkm2wjjkcca7u" path="res://core/scripts/reboot_button.gd" id="3_xl4qa"]
 [ext_resource type="PackedScene" uid="uid://cp8m7wpprdfu0" path="res://scenes/cabinet/cabinet.tscn" id="4_qik5l"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qik5l"]
+font_size = 32
+font_color = Color(0.89492244, 0.89492244, 0.8949224, 1)
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Master" type="Node" unique_id=1514308729]
 
@@ -23,16 +30,63 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control" unique_id=238679096]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=845735443]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Control" type="Control" parent="Control/VBoxContainer" unique_id=1812168202]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control/VBoxContainer/Control" unique_id=447625553]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.41568628, 1, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/Control" unique_id=381430048]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Control/VBoxContainer/Control/HBoxContainer" unique_id=649100427]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Andrew Arcade"
+label_settings = SubResource("LabelSettings_qik5l")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Control/VBoxContainer/Control/HBoxContainer" unique_id=409262997]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "REBOOT"
+script = ExtResource("3_xl4qa")
+
+[node name="Spacer" type="ColorRect" parent="Control/VBoxContainer" unique_id=98471472]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/VBoxContainer" unique_id=238679096]
+layout_mode = 2
+size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="CabinetsDisplay" type="VBoxContainer" parent="Control/ScrollContainer" unique_id=613386767]
+[node name="CabinetsDisplay" type="VBoxContainer" parent="Control/VBoxContainer/ScrollContainer" unique_id=613386767]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
