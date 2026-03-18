@@ -19,16 +19,9 @@ outline_color = Color(0, 0, 0, 1)
 [node name="TitleBar" type="Control" unique_id=1386892992]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 3
-anchors_preset = 0
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1261241046]
-layout_mode = 1
-anchors_preset = 15
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0.41568628, 1, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=242733019]
 layout_mode = 1
@@ -37,50 +30,88 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=829525125]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 0
 
-[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=937498503]
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=1005832627]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 6
+
+[node name="Background" type="ColorRect" parent="HBoxContainer/Control" unique_id=1261241046]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 15.0
+color = Color(0, 0.41568628, 1, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Control" unique_id=1537134701]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="HBoxContainer/Control/VBoxContainer" unique_id=937498503]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 text = "Andrew Arcade"
 label_settings = SubResource("LabelSettings_qik5l")
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
 
-[node name="Version" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=1113364027]
+[node name="Version" type="Label" parent="HBoxContainer/Control/VBoxContainer" unique_id=1113364027]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 3
 text = "vX.X"
 label_settings = SubResource("LabelSettings_xl4qa")
 horizontal_alignment = 1
-vertical_alignment = 1
 script = ExtResource("1_ilpr6")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=193458389]
+[node name="Controls" type="Control" parent="HBoxContainer" unique_id=722684087]
+custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
+
+[node name="Background" type="ColorRect" parent="HBoxContainer/Controls" unique_id=1122215685]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.28026104, 0.6964574, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Controls" unique_id=117189240]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 alignment = 1
 
-[node name="Reboot" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=1988035732]
+[node name="Reboot" type="Button" parent="HBoxContainer/Controls/HBoxContainer" unique_id=1988035732]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Reboot"
 script = ExtResource("2_jag7e")
 
-[node name="Update" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=1864377460]
+[node name="Update" type="Button" parent="HBoxContainer/Controls/HBoxContainer" unique_id=1864377460]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Update"
 script = ExtResource("3_ldf6x")
 
-[node name="Shutdown" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=475547550]
+[node name="Shutdown" type="Button" parent="HBoxContainer/Controls/HBoxContainer" unique_id=475547550]
 layout_mode = 2
+size_flags_vertical = 4
 text = "Shutdown"
 script = ExtResource("4_iroyi")
