@@ -12,6 +12,11 @@ apt update && apt install -y \
     libx11-6 libxcursor1 libxinerama1 libxrandr2 \
     libvulkan1 libasound2 alsa-utils mesa-vulkan-drivers
 
+# Check kernel has GPU module available
+if ! modinfo v3d &>/dev/null; then
+    echo "WARNING: v3d kernel module not found. Run: dietpi-update"
+fi
+
 # Enable seatd so cage can access DRM/input devices
 groupadd -f seat
 systemctl enable seatd
@@ -68,9 +73,27 @@ else
     exit 1
 fi
 
-if ! grep -qE "dtoverlay=vc4-(f)?kms-v3d(-pi[45])?" /boot/config.txt; then
-    echo "Enabling KMS Graphics Driver..."
-    echo "dtoverlay=vc4-kms-v3d" >> /boot/config.txt
+# Detect Pi model and apply correct KMS overlay
+PI_MODEL=$(cat /proc/device-tree/model 2>/dev/null || echo "unknown")
+echo "Detected board: $PI_MODEL"
+
+if echo "$PI_MODEL" | grep -qi "pi 5"; then
+    REQUIRED_OVERLAY="vc4-kms-v3d-pi5"
+else
+    REQUIRED_OVERLAY="vc4-kms-v3d"
+fi
+
+if ! grep -qE "dtoverlay=${REQUIRED_OVERLAY}" /boot/config.txt; then
+    # Remove any conflicting vc4 KMS overlay before adding the correct one
+    sed -i '/^dtoverlay=vc4-.*kms-v3d/d' /boot/config.txt
+    echo "Enabling KMS overlay: $REQUIRED_OVERLAY"
+    echo "dtoverlay=${REQUIRED_OVERLAY}" >> /boot/config.txt
+fi
+
+# Ensure v3d module is loaded at boot (needed for GPU rendering)
+if ! grep -q "^v3d$" /etc/modules 2>/dev/null; then
+    echo "Adding v3d to /etc/modules for boot loading..."
+    echo "v3d" >> /etc/modules
 fi
 
 # 6. DIRECTORY OWNERSHIP

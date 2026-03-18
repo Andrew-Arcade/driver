@@ -21,8 +21,18 @@ DRIVER_DIR="/andrewarcade/driver/builds/0.1"
 BINARY_NAME="driver 0.1 linux-arm64.arm64"
 
 # 4. DIAGNOSTICS
-echo "DRM devices:" && ls -la /dev/dri/ 2>&1
-echo "seatd status:" && systemctl is-active seatd 2>&1
+echo "=== Andrew Arcade Diagnostics ==="
+echo "--- DRM devices ---"
+ls -la /dev/dri/ 2>&1 || echo "  /dev/dri/ does not exist!"
+echo "--- GPU kernel modules ---"
+lsmod | grep -iE "v3d|vc4|drm|rp1" 2>&1 || echo "  No GPU modules loaded"
+echo "--- dmesg GPU errors (last 15) ---"
+dmesg | grep -iE "drm|v3d|vc4|rp1|gpu" | tail -15 2>&1
+echo "--- Pi model ---"
+cat /proc/device-tree/model 2>/dev/null; echo
+echo "--- seatd ---"
+systemctl is-active seatd 2>&1
+echo "=== End Diagnostics ==="
 
 # 5. LAUNCH
 # Run cage as the arcade user (not root) for proper DRM/seatd access
