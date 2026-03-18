@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://clc85236i2arw"]
+
+[ext_resource type="Script" uid="uid://beo4yupluvagb" path="res://scenes/arcade_getter/arcade_getter.gd" id="1_o1dkc"]
+
+[node name="ArcadeGetter" type="Control" unique_id=1557371047]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o1dkc")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=1104387331]
+unique_name_in_owner = true
+
+[node name="ItemList" type="ItemList" parent="." unique_id=1534360803]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -24,12 +24,7 @@ func load_data(data: CabinetData):
 	if icon_rect:
 		if data.icon:
 			icon_rect.texture = data.icon
-		_apply_stretch(icon_rect, data.target_size)
-
-func update_icon(new_tex: Texture2D):
-	if icon_rect:
-		icon_rect.texture = new_tex
-		_apply_stretch(icon_rect, Vector2(64, 64))
+		_apply_stretch(icon_rect, Vector2(128, 128))
 
 func _apply_stretch(rect: TextureRect, _size: Vector2):
 	rect.custom_minimum_size = _size

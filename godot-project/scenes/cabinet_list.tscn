@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d2s563m8jritt"]
 
 [ext_resource type="Script" uid="uid://chan7qh325sfr" path="res://scenes/cabinet_list.gd" id="1_pl48s"]
-[ext_resource type="PackedScene" uid="uid://cp8m7wpprdfu0" path="res://scenes/cabinet.tscn" id="2_1tn6f"]
+[ext_resource type="PackedScene" uid="uid://cp8m7wpprdfu0" path="res://scenes/cabinet/cabinet.tscn" id="2_1tn6f"]
 
 [node name="CabinetList" type="Control" unique_id=778039958]
 layout_mode = 3
