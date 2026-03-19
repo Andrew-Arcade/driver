@@ -5,7 +5,7 @@ func _ready() -> void:
 
 func _on_pressed() -> void:
 	Log.info("Updating driver...")
-	CommandQueue.add("cd /andrewarcade/driver && git pull origin main")
+	CommandQueue.add("cd /andrewarcade/driver && git fetch origin main && git reset --hard origin/main")
 	CommandQueue.add("sudo /andrewarcade/driver/scripts/launch.sh")
 	await get_tree().process_frame
 	get_tree().quit()
