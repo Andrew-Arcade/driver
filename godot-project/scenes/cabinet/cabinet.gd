@@ -6,10 +6,10 @@ extends Control
 @onready var display_name_label : Label = %Title
 @onready var developer_label : Label = %Developer
 @onready var description_label : Label = %Description
-@onready var install_button : TextureButton = %Install
-@onready var remove_button : TextureButton = %Remove
-@onready var update_button : TextureButton = %Update
-@onready var launch_button : TextureButton = %Launch
+@onready var install_button : Button = %Install
+@onready var remove_button : Button = %Remove
+@onready var update_button : Button = %Update
+@onready var launch_button : Button = %Launch
 
 func _ready():
 	if cabinet_data:
