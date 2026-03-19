@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO: Make this auto set the build number to year.month.day.hour-minute in this format ex: 26.3.18.4-58
-
 # Colors
 GREEN='\033[0;32m'; YELLOW='\033[0;33m'; RED='\033[0;31m'
 BLUE='\033[0;34m'; BOLD='\033[1m'; DIM='\033[2m'; NC='\033[0m'
@@ -17,11 +15,15 @@ echo -e "\n${BOLD}Andrew Arcade — Build${NC}\n"
 PROJECT_DIR="./godot-project"
 GODOT="godot"
 
+# Auto-set version to current timestamp
+VERSION_STRING=$(date +'%-y.%-m.%-d.%-H-%-M')
+sed -i "s|config/version=\".*\"|config/version=\"$VERSION_STRING\"|" "$PROJECT_DIR/project.godot"
+
 # Read project name and version from project.godot
 GAME_NAME=$(grep "config/name" $PROJECT_DIR/project.godot | cut -d'"' -f2)
 VERSION=$(grep "config/version" $PROJECT_DIR/project.godot | cut -d'"' -f2)
 
-BUILD_DIR="$(pwd)/builds/$VERSION"
+BUILD_DIR="$(pwd)/builds/release"
 mkdir -p "$BUILD_DIR"
 
 info "Building $GAME_NAME v$VERSION"
@@ -31,7 +33,7 @@ PRESETS=$(grep "name=" $PROJECT_DIR/export_presets.cfg | cut -d'"' -f2)
 
 for PRESET in $PRESETS
 do
-    OUTPUT="$BUILD_DIR/$GAME_NAME $VERSION $PRESET"
+    OUTPUT="$BUILD_DIR/$GAME_NAME $PRESET"
 
     case "$PRESET" in
         linux-arm64)

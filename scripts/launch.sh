@@ -34,8 +34,8 @@ else
     warn "seatd socket not found"
 fi
 
-DRIVER_DIR="/andrewarcade/driver/builds/0.1"
-BINARY_NAME="driver 0.1 linux-arm64.arm64"
+DRIVER_DIR="/andrewarcade/driver/builds/release"
+BINARY_NAME="driver linux-arm64.arm64"
 
 # Launch — cage compositor with Godot
 info "Launching driver"
