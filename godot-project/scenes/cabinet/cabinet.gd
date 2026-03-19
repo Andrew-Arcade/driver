@@ -30,3 +30,4 @@ func _apply_stretch(rect: TextureRect, _size: Vector2):
 	rect.custom_minimum_size = _size
 	rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST

@@ -19,7 +19,7 @@ func fetch_arcade() -> void:
 	http_request.request_completed.connect(
 		func(res, code, head, body): _http_request_completed(res, code, head, body, http_request)
 	)
-	http_request.request(url)
+	http_request.request(url + "?t=" + str(int(Time.get_unix_time_from_system())))
 
 func _http_request_completed(_result, _response_code, _headers, body, request_node: HTTPRequest) -> void:
 	request_node.queue_free()

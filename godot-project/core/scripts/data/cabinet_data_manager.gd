@@ -16,11 +16,12 @@ func _on_arcade_data_received(data: ArcadeData) -> void:
 	
 	for url in data.arcade:
 		var base_raw_url = url.replace("github.com", "raw.githubusercontent.com") + "/main/"
-		var result = await _fetch_cabinet(base_raw_url + "cabinet.json")
+		var cache_bust = "?t=" + str(int(Time.get_unix_time_from_system()))
+		var result = await _fetch_cabinet(base_raw_url + "cabinet.json" + cache_bust)
 		if result:
 			if result.icon_path != "":
 				var encoded_path = "/".join(Array(result.icon_path.split("/")).map(func(s): return s.uri_encode()))
-				result.icon = await _fetch_icon(base_raw_url + encoded_path)
+				result.icon = await _fetch_icon(base_raw_url + encoded_path + cache_bust)
 			cabinets.append(result)
 	
 	cached_cabinets = cabinets
@@ -73,13 +74,14 @@ func _fetch_icon(url: String) -> Texture2D:
 	var body: PackedByteArray = response[3]
 	var image = Image.new()
 
-	if url.ends_with(".png"):
+	var base_url = url.split("?")[0]
+	if base_url.ends_with(".png"):
 		error = image.load_png_from_buffer(body)
-	elif url.ends_with(".jpg") or url.ends_with(".jpeg"):
+	elif base_url.ends_with(".jpg") or base_url.ends_with(".jpeg"):
 		error = image.load_jpg_from_buffer(body)
-	elif url.ends_with(".webp"):
+	elif base_url.ends_with(".webp"):
 		error = image.load_webp_from_buffer(body)
-	elif url.ends_with(".svg"):
+	elif base_url.ends_with(".svg"):
 		error = image.load_svg_from_buffer(body)
 	else:
 		error = image.load_png_from_buffer(body)

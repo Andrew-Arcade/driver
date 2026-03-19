@@ -1,4 +1,4 @@
-extends Button
+extends BaseButton
 
 func _ready() -> void:
 	self.pressed.connect(_on_pressed)
