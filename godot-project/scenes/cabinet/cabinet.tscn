@@ -1,19 +1,41 @@
 [gd_scene format=3 uid="uid://cp8m7wpprdfu0"]
 
 [ext_resource type="Script" uid="uid://dl5p0apoxpca5" path="res://scenes/cabinet/cabinet.gd" id="1_54rbh"]
-[ext_resource type="Texture2D" uid="uid://buht3x3o5ilf1" path="res://assets/sprites/error/error_x128.png" id="2_ikqim"]
-[ext_resource type="Script" uid="uid://i8skb2g0i5ox" path="res://core/scripts/utils/force_x64.gd" id="3_swi0u"]
+[ext_resource type="Texture2D" uid="uid://cxgev14oe2l1q" path="res://assets/sprites/error/error_x64.png" id="4_swi0u"]
+[ext_resource type="Shader" uid="uid://c0urdfqola6s6" path="res://outline_shader.gdshader" id="5_but52"]
+[ext_resource type="Texture2D" uid="uid://y8osfmce4ig4" path="res://assets/sprites/launch.png" id="5_hr30h"]
+[ext_resource type="Texture2D" uid="uid://q331tgkryfs6" path="res://assets/sprites/install.png" id="7_x7syj"]
+[ext_resource type="Texture2D" uid="uid://1gwrrqi1io5r" path="res://assets/sprites/remove.png" id="8_gb3wj"]
+[ext_resource type="Texture2D" uid="uid://3035lfhnj0g" path="res://assets/sprites/update.png" id="9_tghn0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikqim"]
+bg_color = Color(0.744881, 0.23431954, 0.49149996, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_xr4xt"]
 font_size = 18
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_54rbh"]
 font_size = 14
-font_color = Color(0.91228896, 0.9122889, 0.91228884, 1)
+font_color = Color(0.9297146, 0.9297147, 0.9297146, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_c6sfa"]
 font_size = 12
-font_color = Color(0.9137255, 0.9137255, 0.9137255, 1)
+font_color = Color(0.847474, 0.84747463, 0.84747416, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_swi0u"]
+bg_color = Color(0.58684456, 0.1604178, 0.3776162, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x7syj"]
+shader = ExtResource("5_but52")
+shader_parameter/allow_out_of_bounds = false
+shader_parameter/outline_thickness = 5.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
 
 [node name="Cabinet" type="Control" unique_id=1963365157]
 custom_minimum_size = Vector2(0, 128)
@@ -26,77 +48,109 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_54rbh")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1104422333]
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1585018957]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.5104112, 0.14620268, 0.19919878, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_ikqim")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=128742660]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=702390975]
+layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="HBoxContainer" unique_id=543795736]
+[node name="Icon" type="TextureRect" parent="PanelContainer/HBoxContainer" unique_id=1716525325]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-texture = ExtResource("2_ikqim")
-stretch_mode = 3
-script = ExtResource("3_swi0u")
+texture = ExtResource("4_swi0u")
+expand_mode = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=960892757]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=454977672]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Cabinet Title"
-label_settings = SubResource("LabelSettings_xr4xt")
-
-[node name="Developer" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=672715838]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Developer"
-label_settings = SubResource("LabelSettings_54rbh")
-
-[node name="Description" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=750427669]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Description"
-label_settings = SubResource("LabelSettings_c6sfa")
-
-[node name="Control" type="Control" parent="HBoxContainer" unique_id=287627013]
+[node name="TextArea" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=2098911477]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=1927977699]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/TextArea" unique_id=996848453]
 layout_mode = 2
-alignment = 1
 
-[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=650061632]
+[node name="Title" type="Label" parent="PanelContainer/HBoxContainer/TextArea/HBoxContainer" unique_id=454977672]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Launch"
+size_flags_vertical = 1
+text = "Cabinet Title"
+label_settings = SubResource("LabelSettings_xr4xt")
+vertical_alignment = 2
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer" unique_id=660646473]
+[node name="Developer" type="Label" parent="PanelContainer/HBoxContainer/TextArea/HBoxContainer" unique_id=672715838]
+unique_name_in_owner = true
 layout_mode = 2
-alignment = 1
+size_flags_vertical = 1
+text = "Developer"
+label_settings = SubResource("LabelSettings_54rbh")
+vertical_alignment = 2
 
-[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=607153659]
+[node name="Description" type="Label" parent="PanelContainer/HBoxContainer/TextArea" unique_id=750427669]
+unique_name_in_owner = true
 layout_mode = 2
-text = "Install"
+size_flags_vertical = 3
+text = "Description"
+label_settings = SubResource("LabelSettings_c6sfa")
 
-[node name="Button3" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=930667826]
+[node name="ButtonArea" type="PanelContainer" parent="PanelContainer/HBoxContainer" unique_id=507607679]
 layout_mode = 2
-text = "Remove"
+theme_override_styles/panel = SubResource("StyleBoxFlat_swi0u")
 
-[node name="Button4" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=1183355785]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/ButtonArea" unique_id=1985265932]
 layout_mode = 2
-text = "Update"
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/ButtonArea/MarginContainer" unique_id=280307581]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Launch" type="TextureButton" parent="PanelContainer/HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1738293338]
+material = SubResource("ShaderMaterial_x7syj")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Launch"
+texture_normal = ExtResource("5_hr30h")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Install" type="TextureButton" parent="PanelContainer/HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=262777997]
+material = SubResource("ShaderMaterial_x7syj")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Install"
+texture_normal = ExtResource("7_x7syj")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Remove" type="TextureButton" parent="PanelContainer/HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1870624102]
+material = SubResource("ShaderMaterial_x7syj")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Remove"
+texture_normal = ExtResource("8_gb3wj")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Update" type="TextureButton" parent="PanelContainer/HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=974212035]
+material = SubResource("ShaderMaterial_x7syj")
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+tooltip_text = "Update"
+texture_normal = ExtResource("9_tghn0")
+ignore_texture_size = true
+stretch_mode = 0

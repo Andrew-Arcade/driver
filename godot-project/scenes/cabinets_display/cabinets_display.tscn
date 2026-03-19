@@ -11,5 +11,6 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+theme_override_constants/separation = 0
 script = ExtResource("1_lq8p7")
 cabinet_scene = ExtResource("2_wo2au")
