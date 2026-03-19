@@ -12,7 +12,7 @@ config_version=5
 
 config/name="driver"
 config/description="Driver app for Andrew Arcade."
-config/version="26.3.18.21-56"
+config/version="26.3.18.22-9"
 run/main_scene="uid://b2jyuoxjnmkck"
 config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/use_filter=false
