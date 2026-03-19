@@ -126,8 +126,10 @@ fi
 
 # Ownership — give arcade user control for managing cabinets
 info "Setting ownership"
+mkdir -p /andrewarcade/cabinets
 chown -R "$USER:$USER" /andrewarcade
 chown arcade:arcade /var/lib/dietpi/dietpi-autostart/custom.sh
+sudo -u "$USER" git config --global --add safe.directory '*'
 success "Ownership set"
 
 echo -e "\n${GREEN}${BOLD}Setup complete!${NC}"
