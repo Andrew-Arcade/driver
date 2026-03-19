@@ -15,7 +15,7 @@ echo -e "\n${BOLD}Andrew Arcade — Setup${NC}\n"
 # Packages — system dependencies for Wayland, GPU, audio, and emulation
 info "Installing packages"
 apt update && apt install -y \
-    dbus git sudo cage seatd xwayland box64 \
+    dbus git sudo cage seatd xwayland box64 unzip \
     libwayland-client0 libwayland-cursor0 libwayland-egl1 \
     libxfixes3 libxi6 libxkbcommon0 libfontconfig1 \
     libx11-6 libxcursor1 libxinerama1 libxrandr2 \

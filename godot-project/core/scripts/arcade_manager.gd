@@ -199,7 +199,7 @@ func _fetch_and_cache_icon(folder_name: String, base_raw_url: String, icon_path:
 	var cache_bust = "?t=" + str(int(Time.get_unix_time_from_system()))
 	var http = HTTPRequest.new()
 	add_child(http)
-	var error = http.request(base_raw_url + encoded_path + cache_bust)
+	var error = http.request(base_raw_url + "andrewarcade/" + encoded_path + cache_bust)
 	if error != OK:
 		http.queue_free()
 		return
@@ -324,6 +324,7 @@ func install_cabinet(cabinet_name: String) -> void:
 	# Store release tag
 	entry["release_tag"] = json.get("tag_name", "")
 	entry["status"] = CabinetStatus.INSTALLED
+	_save_cache()
 	cabinets_updated.emit()
 
 func remove_cabinet(cabinet_name: String) -> void:
