@@ -40,8 +40,12 @@ func _update_buttons(entry: Dictionary) -> void:
 	var installed = status != ArcadeManager.CabinetStatus.NOT_INSTALLED
 	if install_button:
 		install_button.visible = not installed
-		install_button.disabled = false
-		install_button.text = "Install"
+		if not installed and entry.get("repo_url", "") == "":
+			install_button.disabled = true
+			install_button.text = "Loading..."
+		else:
+			install_button.disabled = false
+			install_button.text = "Install"
 	if remove_button:
 		remove_button.visible = installed
 		remove_button.disabled = false

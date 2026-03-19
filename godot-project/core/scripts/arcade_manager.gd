@@ -12,11 +12,13 @@ const ARCADE_JSON_URL := "https://raw.githubusercontent.com/Andrew-Arcade/driver
 
 var cabinets: Dictionary = {}
 var is_busy: bool = false
+var is_loading: bool = false
 
 func _ready() -> void:
 	await _initialize()
 
 func _initialize() -> void:
+	is_loading = true
 	DirAccess.make_dir_recursive_absolute(CABINETS_DIR)
 	DirAccess.make_dir_recursive_absolute(ICONS_DIR)
 	_scan_installed()
@@ -25,12 +27,15 @@ func _initialize() -> void:
 	cabinets_updated.emit()
 	if await Network.is_connected():
 		await _fetch_remote()
+	is_loading = false
+	cabinets_updated.emit()
 	Log.info("Arcade manager initialized.")
 
 func refresh() -> void:
 	if is_busy:
 		return
 	is_busy = true
+	is_loading = true
 	Log.info("Refreshing...")
 	_scan_installed()
 	cabinets_updated.emit()
@@ -40,6 +45,8 @@ func refresh() -> void:
 		_load_cache()
 		cabinets_updated.emit()
 		Log.warn("Offline — showing cached data.")
+	is_loading = false
+	cabinets_updated.emit()
 	is_busy = false
 
 func _scan_installed() -> void:
@@ -109,6 +116,7 @@ func _fetch_remote() -> void:
 	for folder_name in cabinets.keys():
 		if cabinets[folder_name]["status"] == CabinetStatus.NOT_INSTALLED and folder_name not in remote_folders:
 			cabinets.erase(folder_name)
+	cabinets_updated.emit()
 	# Fetch cabinet.json for each repo
 	for url in urls:
 		var folder_name: String = url.get_file()
@@ -117,6 +125,7 @@ func _fetch_remote() -> void:
 			cabinets[folder_name]["status"] = CabinetStatus.NOT_INSTALLED
 		cabinets[folder_name]["repo_url"] = url
 		await _fetch_cabinet_json(folder_name, url)
+		cabinets_updated.emit()
 	await _check_updates()
 	_save_cache()
 	cabinets_updated.emit()
