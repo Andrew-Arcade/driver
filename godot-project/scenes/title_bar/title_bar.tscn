@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://b3tbjjq6w73xy"]
 
-[ext_resource type="Script" uid="uid://gjkf5xbxft42" path="res://core/scripts/version_label.gd" id="1_ilpr6"]
+[ext_resource type="Script" uid="uid://gjkf5xbxft42" path="res://core/scripts/utils/version_label.gd" id="1_ilpr6"]
 [ext_resource type="Script" uid="uid://dkm2wjjkcca7u" path="res://core/scripts/buttons/reboot_button.gd" id="2_jag7e"]
-[ext_resource type="Script" uid="uid://d3mpnxwjsl7dj" path="res://yes_button.gd" id="2_ldf6x"]
 [ext_resource type="Script" uid="uid://ctpy6bvdl7tbd" path="res://core/scripts/buttons/quit_button.gd" id="3_jag7e"]
 [ext_resource type="Script" uid="uid://cxi3vge08aqph" path="res://core/scripts/buttons/update_button.gd" id="3_ldf6x"]
 [ext_resource type="Script" uid="uid://c8ohlqia4w2ce" path="res://core/scripts/buttons/shutdown_button.gd" id="4_iroyi"]
@@ -93,13 +92,6 @@ theme_override_constants/margin_right = 10
 layout_mode = 2
 theme_override_constants/separation = 5
 alignment = 1
-
-[node name="Yes" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1766628967]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-text = "Yes"
-script = ExtResource("2_ldf6x")
 
 [node name="Update" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1864377460]
 layout_mode = 2

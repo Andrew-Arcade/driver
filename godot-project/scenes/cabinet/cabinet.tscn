@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dl5p0apoxpca5" path="res://scenes/cabinet/cabinet.gd" id="1_54rbh"]
 [ext_resource type="Texture2D" uid="uid://buht3x3o5ilf1" path="res://assets/sprites/error/error_x128.png" id="2_ikqim"]
-[ext_resource type="Script" uid="uid://i8skb2g0i5ox" path="res://core/scripts/force_x64.gd" id="3_swi0u"]
+[ext_resource type="Script" uid="uid://i8skb2g0i5ox" path="res://core/scripts/utils/force_x64.gd" id="3_swi0u"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xr4xt"]
 font_size = 18

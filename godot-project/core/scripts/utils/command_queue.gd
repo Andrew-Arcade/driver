@@ -10,4 +10,4 @@ func add(cmd: String) -> void:
 		file.seek_end()
 	file.store_line(cmd)
 	file.close()
-	GlobalLogger.info("Queued: " + cmd)
+	Log.info("Queued: " + cmd)
