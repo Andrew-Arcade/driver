@@ -26,12 +26,6 @@ outline_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilpr6"]
 bg_color = Color(0, 0.2784314, 0.69803923, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_e7sev"]
-shader = ExtResource("6_0s78t")
-shader_parameter/allow_out_of_bounds = false
-shader_parameter/outline_thickness = 5.0
-shader_parameter/outline_color = Color(0, 0, 0, 1)
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0s78t"]
 shader = ExtResource("6_0s78t")
 shader_parameter/allow_out_of_bounds = false
@@ -161,7 +155,6 @@ theme_override_constants/separation = 5
 alignment = 1
 
 [node name="Update" type="TextureButton" parent="HBoxContainer/ButtonArea/MarginContainer/Icon Buttons" unique_id=2089097582]
-material = SubResource("ShaderMaterial_e7sev")
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4

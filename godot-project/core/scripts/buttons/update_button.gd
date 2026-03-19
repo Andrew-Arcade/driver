@@ -1,4 +1,4 @@
-extends "icon_button.gd"
+extends "command_button.gd"
 
 func _execute() -> void:
 	CommandQueue.add("cd /andrewarcade/driver && git fetch origin main && git reset --hard origin/main")
