@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bgd7dof36bmhc" path="res://core/scripts/utils/console.gd" id="1_a45cr"]
 [ext_resource type="Shader" uid="uid://cmqo2h6hmux8g" path="res://scenes/console/shockwave_shader.gdshader" id="2_ov55a"]
+[ext_resource type="Shader" uid="uid://ix247lugx2e8" path="res://scenes/console/retro_camera_shader.gdshader" id="3_kai4s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kai4s"]
 shader = ExtResource("2_ov55a")
@@ -18,6 +19,13 @@ shader_parameter/noise_scale = 2.0
 shader_parameter/noise_strength = 0.015
 shader_parameter/noise_speed = 0.05
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5dyh"]
+shader = ExtResource("3_kai4s")
+shader_parameter/pixel_size = 3.0
+shader_parameter/vhs_intensity = 2.714000128915
+shader_parameter/noise_intensity = 0.0290000013775
+shader_parameter/opacity = 0.13600000646
+
 [node name="Console" type="Control" unique_id=738008698]
 layout_mode = 3
 anchors_preset = 15
@@ -29,6 +37,7 @@ size_flags_vertical = 3
 script = ExtResource("1_a45cr")
 
 [node name="Shockwave" type="ColorRect" parent="." unique_id=240792713]
+visible = false
 material = SubResource("ShaderMaterial_kai4s")
 layout_mode = 1
 anchors_preset = 15
@@ -86,3 +95,13 @@ theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 scroll_following = true
 scroll_following_visible_characters = true
+
+[node name="RetroCamera" type="ColorRect" parent="." unique_id=1371667607]
+material = SubResource("ShaderMaterial_m5dyh")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
