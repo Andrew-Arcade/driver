@@ -11,8 +11,6 @@ func _shutdown() -> void:
 func _reboot() -> void:
 	GlobalLogger.info("Rebooting system...")
 	
-	Shell.command("/usr/bin/sudo /usr/bin")
-
 	var output = []
 	var exit_code = OS.execute("/usr/bin/sudo", ["/usr/bin/systemctl", "reboot"], output)
 
@@ -20,8 +18,12 @@ func _reboot() -> void:
 
 func _update() -> void:
 	GlobalLogger.info("Updating driver...")
-	
-	var output = Shell.command("/bin/bash -c sleep 3 && /andrewarcade/driver/scripts/launch.sh")
-	GlobalLogger.info(output)
-	#OS.create_process("/bin/bash", ["-c", "sleep 3 && /andrewarcade/driver/scripts/launch.sh"])
-	#get_tree().quit()
+
+	# Pull latest code (blocking — shows output)
+	var pull_output = Shell.command("cd /andrewarcade/driver && git pull origin main 2>&1")
+	GlobalLogger.info(pull_output)
+
+	# Relaunch in background, then quit
+	GlobalLogger.info("Relaunching driver...")
+	OS.create_process("/bin/bash", ["-c", "sleep 3 && /andrewarcade/driver/scripts/launch.sh"])
+	get_tree().quit()
