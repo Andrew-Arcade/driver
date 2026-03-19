@@ -1,99 +1,75 @@
 extends Control
 
-@export var cabinet_data : CabinetData 
+var cabinet_name: String
 
-@onready var icon_rect : TextureRect = %Icon
-@onready var display_name_label : Label = %Title
-@onready var developer_label : Label = %Developer
-@onready var description_label : Label = %Description
-@onready var install_button : Button = %Install
-@onready var remove_button : Button = %Remove
-@onready var update_button : Button = %Update
-@onready var launch_button : Button = %Launch
+@onready var icon_rect: TextureRect = %Icon
+@onready var display_name_label: Label = %Title
+@onready var developer_label: Label = %Developer
+@onready var description_label: Label = %Description
+@onready var install_button: Button = %Install
+@onready var remove_button: Button = %Remove
+@onready var update_button: Button = %Update
+@onready var launch_button: Button = %Launch
 
 func _ready():
-	if cabinet_data:
-		load_data(cabinet_data)
 	install_button.pressed.connect(_on_install_pressed)
 	remove_button.pressed.connect(_on_remove_pressed)
 	update_button.pressed.connect(_on_update_pressed)
 	launch_button.pressed.connect(_on_launch_pressed)
+	ArcadeManager.cabinets_updated.connect(_refresh_display)
+	_refresh_display()
+
+func _refresh_display() -> void:
+	if cabinet_name == "" or not ArcadeManager.cabinets.has(cabinet_name):
+		return
+	var entry: Dictionary = ArcadeManager.cabinets[cabinet_name]
+	if display_name_label:
+		display_name_label.text = entry.get("display_name", cabinet_name)
+	if developer_label:
+		developer_label.text = "By: " + entry.get("developer", "Unknown")
+	if description_label:
+		description_label.text = entry.get("description", "")
+	if icon_rect:
+		if entry.get("icon") != null:
+			icon_rect.texture = entry["icon"]
+		_apply_stretch(icon_rect, Vector2(128, 128))
+	_update_buttons(entry)
+
+func _update_buttons(entry: Dictionary) -> void:
+	var status: int = entry.get("status", ArcadeManager.CabinetStatus.NOT_INSTALLED)
+	var installed = status != ArcadeManager.CabinetStatus.NOT_INSTALLED
+	if install_button:
+		install_button.visible = not installed
+		install_button.disabled = false
+		install_button.text = "Install"
+	if remove_button:
+		remove_button.visible = installed
+		remove_button.disabled = false
+		remove_button.text = "Remove"
+	if update_button:
+		update_button.visible = status == ArcadeManager.CabinetStatus.UPDATE_AVAILABLE
+		update_button.disabled = false
+		update_button.text = "Update"
+	if launch_button:
+		launch_button.visible = installed
 
 func _on_install_pressed():
-	if not cabinet_data or cabinet_data.repo_url == "":
-		Log.warn("No repo URL available for install.")
-		return
-	var install_path = _get_install_path()
-	Log.info("Installing " + cabinet_data.display_name + " to " + install_path)
-	Shell.command("git clone " + cabinet_data.repo_url + " " + install_path)
-	_update_buttons()
-
-func _on_launch_pressed():
-	if not cabinet_data or cabinet_data.command == "":
-		Log.warn("No launch command available.")
-		return
-	var install_path = _get_install_path()
-	CommandQueue.add("cd " + install_path + " && " + cabinet_data.command)
-	CommandQueue.add("sudo /andrewarcade/driver/scripts/launch.sh")
-	Log.info("Launching " + cabinet_data.display_name)
-	await get_tree().process_frame
-	get_tree().quit()
-
-func _on_update_pressed():
-	var path = _get_install_path()
-	Log.info("Updating " + cabinet_data.display_name)
-	Shell.command("git -C " + path + " pull")
-	_update_buttons()
+	install_button.text = "Installing..."
+	install_button.disabled = true
+	await ArcadeManager.install_cabinet(cabinet_name)
 
 func _on_remove_pressed():
-	if not cabinet_data:
-		return
-	var install_path = _get_install_path()
-	Log.info("Removing " + cabinet_data.display_name + " from " + install_path)
-	Shell.command("rm -rf " + install_path)
-	_update_buttons()
+	remove_button.text = "Removing..."
+	remove_button.disabled = true
+	await ArcadeManager.remove_cabinet(cabinet_name)
 
-func load_data(data: CabinetData):
-	if display_name_label:
-		display_name_label.text = data.display_name
+func _on_update_pressed():
+	update_button.text = "Updating..."
+	update_button.disabled = true
+	await ArcadeManager.update_cabinet(cabinet_name)
 
-	if developer_label:
-		developer_label.text = "By: " + data.developer
-
-	if description_label:
-		description_label.text = data.description
-
-	if icon_rect:
-		if data.icon:
-			icon_rect.texture = data.icon
-		_apply_stretch(icon_rect, Vector2(128, 128))
-
-	_update_buttons()
-
-func _get_install_path() -> String:
-	var repo_name = cabinet_data.repo_url.get_file()
-	return "/andrewarcade/cabinets/" + repo_name
-
-func _has_update() -> bool:
-	var path = _get_install_path()
-	if not DirAccess.dir_exists_absolute(path):
-		return false
-	Shell.command("git -C " + path + " fetch")
-	var local = Shell.command("git -C " + path + " rev-parse HEAD").strip_edges()
-	var remote = Shell.command("git -C " + path + " rev-parse @{u}").strip_edges()
-	return local != remote
-
-func _update_buttons():
-	if cabinet_data:
-		var installed = DirAccess.dir_exists_absolute(_get_install_path())
-		if install_button:
-			install_button.visible = not installed
-		if remove_button:
-			remove_button.visible = installed
-		if update_button:
-			update_button.visible = installed and _has_update()
-		if launch_button:
-			launch_button.visible = installed
+func _on_launch_pressed():
+	ArcadeManager.launch_cabinet(cabinet_name)
 
 func _apply_stretch(rect: TextureRect, _size: Vector2):
 	rect.custom_minimum_size = _size

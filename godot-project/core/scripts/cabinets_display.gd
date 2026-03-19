@@ -3,14 +3,12 @@ extends VBoxContainer
 @export var cabinet_scene: PackedScene
 
 func _ready() -> void:
-	CabinetDataManager.all_cabinets_loaded.connect(_on_cabinet_data_loaded)
+	ArcadeManager.cabinets_updated.connect(_on_cabinets_updated)
 
-func _on_cabinet_data_loaded(data: Array[CabinetData]) -> void:
-	for cabinet in data:
-		create_cabinet(cabinet)
-
-func create_cabinet(data : CabinetData):
-	var new_cabinet = cabinet_scene.instantiate()
-	new_cabinet.cabinet_data = data
-	
-	add_child(new_cabinet)
+func _on_cabinets_updated() -> void:
+	for child in get_children():
+		child.queue_free()
+	for cabinet_name in ArcadeManager.cabinets:
+		var new_cabinet = cabinet_scene.instantiate()
+		new_cabinet.cabinet_name = cabinet_name
+		add_child(new_cabinet)

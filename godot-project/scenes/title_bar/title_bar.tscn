@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://ctpy6bvdl7tbd" path="res://core/scripts/buttons/quit_button.gd" id="3_jag7e"]
 [ext_resource type="Script" uid="uid://cxi3vge08aqph" path="res://core/scripts/buttons/update_button.gd" id="3_ldf6x"]
 [ext_resource type="Script" uid="uid://c8ohlqia4w2ce" path="res://core/scripts/buttons/shutdown_button.gd" id="4_iroyi"]
+[ext_resource type="Script" path="res://core/scripts/buttons/refresh_button.gd" id="5_refresh"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_qik5l"]
 font_size = 32
@@ -97,6 +98,7 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 4
 text = "Refresh"
+script = ExtResource("5_refresh")
 
 [node name="Update" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/Text Buttons" unique_id=1864377460]
 layout_mode = 2
