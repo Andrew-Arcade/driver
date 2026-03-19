@@ -53,8 +53,7 @@ void fragment() {
 
     float ring = smoothstep(0.0, width, wave) *
                  (1.0 - smoothstep(width, width * 2.0, wave));
-
-   float max_dist = length(max(center, 1.0 - center));
+ float max_dist = length(max(center, 1.0 - center));
     float edge_fade = smoothstep(max_dist, max_dist * fade, dist);
 
     float alpha = ring * edge_fade;

@@ -1,0 +1,12 @@
+Notes
+=====
+
+1. Rewrite cabinet data system to support offline use
+   - Cache cabinet data locally (temp folder) so the driver doesn't need to fetch from GitHub every launch
+   - Show all cached cabinets immediately on startup, then update from server in the background if online
+   - Cabinets list should be usable fully offline from cache
+   - Still allow updating/refreshing from the server when connected
+
+2. UI changes — considering adding a bar or other layout changes (TBD, sleeping on it)
+
+3. Clean up temp files (cabinet.json.tmp, launch.sh.tmp) once test-cabinet repo is finalized

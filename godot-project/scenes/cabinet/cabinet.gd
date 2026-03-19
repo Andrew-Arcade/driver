@@ -9,6 +9,7 @@ extends Control
 @onready var install_button : TextureButton = %Install
 @onready var remove_button : TextureButton = %Remove
 @onready var update_button : TextureButton = %Update
+@onready var launch_button : TextureButton = %Launch
 
 func _ready():
 	if cabinet_data:
@@ -16,6 +17,7 @@ func _ready():
 	install_button.pressed.connect(_on_install_pressed)
 	remove_button.pressed.connect(_on_remove_pressed)
 	update_button.pressed.connect(_on_update_pressed)
+	launch_button.pressed.connect(_on_launch_pressed)
 
 func _on_install_pressed():
 	if not cabinet_data or cabinet_data.repo_url == "":
@@ -25,6 +27,17 @@ func _on_install_pressed():
 	Log.info("Installing " + cabinet_data.display_name + " to " + install_path)
 	Shell.command("git clone " + cabinet_data.repo_url + " " + install_path)
 	_update_buttons()
+
+func _on_launch_pressed():
+	if not cabinet_data or cabinet_data.command == "":
+		Log.warn("No launch command available.")
+		return
+	var install_path = _get_install_path()
+	CommandQueue.add("cd " + install_path + " && " + cabinet_data.command)
+	CommandQueue.add("sudo /andrewarcade/driver/scripts/launch.sh")
+	Log.info("Launching " + cabinet_data.display_name)
+	await get_tree().process_frame
+	get_tree().quit()
 
 func _on_update_pressed():
 	var path = _get_install_path()
@@ -79,6 +92,8 @@ func _update_buttons():
 			remove_button.visible = installed
 		if update_button:
 			update_button.visible = installed and _has_update()
+		if launch_button:
+			launch_button.visible = installed
 
 func _apply_stretch(rect: TextureRect, _size: Vector2):
 	rect.custom_minimum_size = _size

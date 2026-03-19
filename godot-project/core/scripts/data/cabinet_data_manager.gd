@@ -52,6 +52,7 @@ func _fetch_cabinet(url: String) -> CabinetData:
 			cab.developer = json.get("developer", "Unknown")
 			cab.description = json.get("description", "")
 			cab.icon_path = json.get("icon", "")
+			cab.command = json.get("command", "")
 			return cab
 
 	return null
