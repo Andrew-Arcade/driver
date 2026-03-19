@@ -1,6 +1,22 @@
 [gd_scene format=3 uid="uid://ckry56qmjnw32"]
 
 [ext_resource type="Script" uid="uid://bgd7dof36bmhc" path="res://core/scripts/utils/console.gd" id="1_a45cr"]
+[ext_resource type="Shader" uid="uid://cmqo2h6hmux8g" path="res://scenes/console/shockwave_shader.gdshader" id="2_ov55a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kai4s"]
+shader = ExtResource("2_ov55a")
+shader_parameter/wave_color = Color(0, 0.37354115, 0, 1)
+shader_parameter/speed = 0.25
+shader_parameter/frequency = 6.0
+shader_parameter/width = 0.36
+shader_parameter/fade = 0.695
+shader_parameter/center = Vector2(0.5, -0.785)
+shader_parameter/sine_scale = 10.0
+shader_parameter/sine_speed = 0.1
+shader_parameter/sine_strength = 0.04
+shader_parameter/noise_scale = 2.0
+shader_parameter/noise_strength = 0.015
+shader_parameter/noise_speed = 0.05
 
 [node name="Console" type="Control" unique_id=738008698]
 layout_mode = 3
@@ -12,7 +28,17 @@ grow_vertical = 2
 size_flags_vertical = 3
 script = ExtResource("1_a45cr")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=240792713]
+[node name="Shockwave" type="ColorRect" parent="." unique_id=240792713]
+material = SubResource("ShaderMaterial_kai4s")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="Background" type="ColorRect" parent="." unique_id=491433928]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -19,6 +19,7 @@ func _on_arcade_data_received(data: ArcadeData) -> void:
 		var cache_bust = "?t=" + str(int(Time.get_unix_time_from_system()))
 		var result = await _fetch_cabinet(base_raw_url + "cabinet.json" + cache_bust)
 		if result:
+			result.repo_url = url
 			if result.icon_path != "":
 				var encoded_path = "/".join(Array(result.icon_path.split("/")).map(func(s): return s.uri_encode()))
 				result.icon = await _fetch_icon(base_raw_url + encoded_path + cache_bust)

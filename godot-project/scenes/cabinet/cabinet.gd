@@ -6,10 +6,21 @@ extends Control
 @onready var display_name_label : Label = %Title
 @onready var developer_label : Label = %Developer
 @onready var description_label : Label = %Description
+@onready var install_button : TextureButton = %Install
 
 func _ready():
 	if cabinet_data:
 		load_data(cabinet_data)
+	install_button.pressed.connect(_on_install_pressed)
+
+func _on_install_pressed():
+	if not cabinet_data or cabinet_data.repo_url == "":
+		Log.warn("No repo URL available for install.")
+		return
+	var repo_name = cabinet_data.repo_url.get_file()
+	var install_path = "/andrewarcade/cabinets/" + repo_name
+	Log.info("Installing " + cabinet_data.display_name + " to " + install_path)
+	Shell.command("git clone " + cabinet_data.repo_url + " " + install_path)
 
 func load_data(data: CabinetData):
 	if display_name_label:
