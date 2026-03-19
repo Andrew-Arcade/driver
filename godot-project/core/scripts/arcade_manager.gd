@@ -60,8 +60,27 @@ func _scan_installed() -> void:
 			if not cabinets.has(folder):
 				cabinets[folder] = _empty_entry(folder)
 			cabinets[folder]["status"] = CabinetStatus.INSTALLED
+			_read_local_cabinet_json(folder)
 		folder = dir.get_next()
 	dir.list_dir_end()
+
+func _read_local_cabinet_json(folder_name: String) -> void:
+	var path = CABINETS_DIR + "/" + folder_name + "/cabinet.json"
+	if not FileAccess.file_exists(path):
+		return
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return
+	var json = JSON.parse_string(file.get_as_text())
+	file.close()
+	if json is not Dictionary:
+		return
+	var entry: Dictionary = cabinets[folder_name]
+	entry["display_name"] = json.get("display_name", entry["display_name"])
+	entry["developer"] = json.get("developer", entry["developer"])
+	entry["description"] = json.get("description", entry["description"])
+	entry["command"] = json.get("command", entry["command"])
+	entry["asset"] = json.get("asset", entry["asset"])
 
 func _load_cache() -> void:
 	if not FileAccess.file_exists(CACHE_FILE):
@@ -154,7 +173,7 @@ func _fetch_cabinet_json(folder_name: String, repo_url: String) -> void:
 	var cache_bust = "?t=" + str(int(Time.get_unix_time_from_system()))
 	var http = HTTPRequest.new()
 	add_child(http)
-	var error = http.request(base_raw_url + "cabinet.json" + cache_bust)
+	var error = http.request(base_raw_url + "andrewarcade/cabinet.json" + cache_bust)
 	if error != OK:
 		http.queue_free()
 		return
@@ -171,7 +190,7 @@ func _fetch_cabinet_json(folder_name: String, repo_url: String) -> void:
 	entry["description"] = json.get("description", "")
 	entry["icon_path"] = json.get("icon", "")
 	entry["command"] = json.get("command", "")
-	entry["arch"] = json.get("arch", "")
+	entry["asset"] = json.get("asset", "")
 	if entry["icon_path"] != "":
 		await _fetch_and_cache_icon(folder_name, base_raw_url, entry["icon_path"])
 
@@ -212,12 +231,26 @@ func _check_updates() -> void:
 		var entry: Dictionary = cabinets[folder_name]
 		if entry["status"] != CabinetStatus.INSTALLED:
 			continue
-		var path = CABINETS_DIR + "/" + folder_name
-		await get_tree().process_frame
-		Shell.command("git -C " + path + " fetch")
-		var local = Shell.command("git -C " + path + " rev-parse HEAD").strip_edges()
-		var remote = Shell.command("git -C " + path + " rev-parse @{u}").strip_edges()
-		if local != remote and remote != "":
+		if entry["repo_url"] == "" or entry["release_tag"] == "":
+			continue
+		var api_path = _get_repo_api_path(entry["repo_url"])
+		if api_path == "":
+			continue
+		var http = HTTPRequest.new()
+		add_child(http)
+		var error = http.request("https://api.github.com/repos/" + api_path + "/releases/latest")
+		if error != OK:
+			http.queue_free()
+			continue
+		var response = await http.request_completed
+		http.queue_free()
+		if response[1] != 200:
+			continue
+		var json = JSON.parse_string(response[3].get_string_from_utf8())
+		if json is not Dictionary:
+			continue
+		var latest_tag: String = json.get("tag_name", "")
+		if latest_tag != "" and latest_tag != entry["release_tag"]:
 			entry["status"] = CabinetStatus.UPDATE_AVAILABLE
 
 func install_cabinet(cabinet_name: String) -> void:
@@ -226,10 +259,70 @@ func install_cabinet(cabinet_name: String) -> void:
 	if repo_url == "":
 		Log.warn("No repo URL for " + cabinet_name)
 		return
+	var asset_name: String = entry.get("asset", "")
+	if asset_name == "":
+		Log.warn("No asset defined for " + cabinet_name)
+		return
+	var api_path = _get_repo_api_path(repo_url)
+	if api_path == "":
+		Log.warn("Invalid repo URL for " + cabinet_name)
+		return
 	var install_path = CABINETS_DIR + "/" + cabinet_name
 	Log.info("Installing " + cabinet_name + "...")
 	await get_tree().process_frame
-	Shell.command("git clone " + repo_url + " " + install_path)
+	# Fetch latest release
+	var http = HTTPRequest.new()
+	add_child(http)
+	var error = http.request("https://api.github.com/repos/" + api_path + "/releases/latest")
+	if error != OK:
+		http.queue_free()
+		Log.warn("Failed to fetch release info for " + cabinet_name)
+		return
+	var response = await http.request_completed
+	http.queue_free()
+	if response[1] != 200:
+		Log.warn("Failed to fetch release for " + cabinet_name + " (HTTP %d)" % response[1])
+		return
+	var json = JSON.parse_string(response[3].get_string_from_utf8())
+	if json is not Dictionary:
+		Log.warn("Invalid release data for " + cabinet_name)
+		return
+	# Find matching asset
+	var download_url := ""
+	var assets: Array = json.get("assets", [])
+	for asset in assets:
+		if asset is Dictionary and asset.get("name", "") == asset_name:
+			download_url = asset.get("browser_download_url", "")
+			break
+	if download_url == "":
+		Log.warn("Asset '%s' not found in release for %s" % [asset_name, cabinet_name])
+		return
+	# Download the zip
+	var tmp_zip = "/tmp/" + cabinet_name + ".zip"
+	var dl_http = HTTPRequest.new()
+	dl_http.download_file = tmp_zip
+	add_child(dl_http)
+	error = dl_http.request(download_url)
+	if error != OK:
+		dl_http.queue_free()
+		Log.warn("Failed to start download for " + cabinet_name)
+		return
+	response = await dl_http.request_completed
+	dl_http.queue_free()
+	if response[1] != 200:
+		Log.warn("Failed to download asset for " + cabinet_name + " (HTTP %d)" % response[1])
+		return
+	# Extract zip to temp dir, then move inner andrewarcade/ contents to install path
+	var tmp_extract = "/tmp/" + cabinet_name + "-extract"
+	Shell.command("rm -rf " + tmp_extract)
+	Shell.command("unzip -o " + tmp_zip + " -d " + tmp_extract)
+	Shell.command("rm -f " + tmp_zip)
+	Shell.command("mv " + tmp_extract + "/andrewarcade " + install_path)
+	Shell.command("rm -rf " + tmp_extract)
+	# Read local cabinet.json to populate entry fields (enables offline launch)
+	_read_local_cabinet_json(cabinet_name)
+	# Store release tag
+	entry["release_tag"] = json.get("tag_name", "")
 	entry["status"] = CabinetStatus.INSTALLED
 	cabinets_updated.emit()
 
@@ -239,15 +332,15 @@ func remove_cabinet(cabinet_name: String) -> void:
 	await get_tree().process_frame
 	Shell.command("rm -rf " + install_path)
 	cabinets[cabinet_name]["status"] = CabinetStatus.NOT_INSTALLED
+	cabinets[cabinet_name]["release_tag"] = ""
 	cabinets_updated.emit()
 
 func update_cabinet(cabinet_name: String) -> void:
 	var install_path = CABINETS_DIR + "/" + cabinet_name
 	Log.info("Updating " + cabinet_name + "...")
 	await get_tree().process_frame
-	Shell.command("git -C " + install_path + " pull")
-	cabinets[cabinet_name]["status"] = CabinetStatus.INSTALLED
-	cabinets_updated.emit()
+	Shell.command("rm -rf " + install_path)
+	await install_cabinet(cabinet_name)
 
 func launch_cabinet(cabinet_name: String) -> void:
 	var entry: Dictionary = cabinets[cabinet_name]
@@ -256,15 +349,18 @@ func launch_cabinet(cabinet_name: String) -> void:
 		Log.warn("No launch command for " + cabinet_name)
 		return
 	var install_path = CABINETS_DIR + "/" + cabinet_name
-	var arch: String = entry.get("arch", "")
-	var launch_cmd = command
-	if arch == "x86_64":
-		launch_cmd = "box64 " + launch_cmd
-	CommandQueue.add("cd " + install_path + " && " + launch_cmd)
+	CommandQueue.add("cd " + install_path + " && " + command)
 	CommandQueue.add("sudo /andrewarcade/driver/scripts/launch.sh")
 	Log.info("Launching " + cabinet_name)
 	await get_tree().process_frame
 	get_tree().quit()
+
+func _get_repo_api_path(repo_url: String) -> String:
+	# Convert https://github.com/owner/repo to owner/repo
+	var parts = repo_url.trim_suffix("/").split("/")
+	if parts.size() < 2:
+		return ""
+	return parts[-2] + "/" + parts[-1]
 
 func _empty_entry(folder_name: String) -> Dictionary:
 	return {
@@ -276,6 +372,7 @@ func _empty_entry(folder_name: String) -> Dictionary:
 		"description": "",
 		"icon_path": "",
 		"command": "",
-		"arch": "",
+		"asset": "",
+		"release_tag": "",
 		"icon": null,
 	}
