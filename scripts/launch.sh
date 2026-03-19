@@ -12,6 +12,9 @@ dim()     { while IFS= read -r line; do echo -e "${DIM}   ${line}${NC}"; done; }
 
 echo -e "\n${BOLD}Andrew Arcade — Launch${NC}\n"
 
+# Clear any stale queued commands
+> /tmp/andrewarcade-queue
+
 # Runtime directories — wiped on every reboot, must be recreated
 info "Runtime directories"
 sudo mkdir -p /run/user/1001
