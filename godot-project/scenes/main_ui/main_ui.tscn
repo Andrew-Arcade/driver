@@ -12,12 +12,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="Console" parent="." unique_id=738008698 instance=ExtResource("1_4kns6")]
-layout_mode = 2
-size_flags_stretch_ratio = 0.25
-
 [node name="TitleBar" parent="." unique_id=1386892992 instance=ExtResource("1_82ck7")]
 layout_mode = 2
 
 [node name="CabinetsDisplay" parent="." unique_id=1747438508 instance=ExtResource("2_4kns6")]
 layout_mode = 2
+
+[node name="Console" parent="." unique_id=738008698 instance=ExtResource("1_4kns6")]
+layout_mode = 2
+size_flags_stretch_ratio = 0.25

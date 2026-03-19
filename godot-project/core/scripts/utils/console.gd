@@ -3,6 +3,8 @@ extends Control
 func _ready() -> void:
 	Log.message_logged.connect(_on_message_logged)
 	Log.info("Console ready!")
+	
+	%Clear.pressed.connect(_on_clear_pressed)
 
 func _on_message_logged(message: String, type: int):
 	var color = "white"
@@ -14,3 +16,6 @@ func _on_message_logged(message: String, type: int):
 	
 	var formatted_msg = "[color=%s]%s[/color]\n" % [color, message]
 	%Log.append_text(formatted_msg)
+
+func _on_clear_pressed() -> void:
+	%Log.clear()

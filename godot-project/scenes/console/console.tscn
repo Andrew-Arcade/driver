@@ -12,19 +12,6 @@ grow_vertical = 2
 size_flags_vertical = 3
 script = ExtResource("1_a45cr")
 
-[node name="Log" type="RichTextLabel" parent="." unique_id=945134175]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 14
-bbcode_enabled = true
-scroll_following = true
-scroll_following_visible_characters = true
-
 [node name="ColorRect" type="ColorRect" parent="." unique_id=240792713]
 layout_mode = 1
 anchors_preset = 15
@@ -33,3 +20,43 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.49803922)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=783256394]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=860453078]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=187718933]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=938102066]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
+text = "OUTPUT"
+vertical_alignment = 1
+
+[node name="Clear" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1961627359]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Clear"
+
+[node name="Log" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=945134175]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+scroll_following = true
+scroll_following_visible_characters = true
