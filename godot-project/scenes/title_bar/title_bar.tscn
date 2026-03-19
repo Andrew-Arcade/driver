@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://gjkf5xbxft42" path="res://core/scripts/version_label.gd" id="1_ilpr6"]
 [ext_resource type="Script" uid="uid://dkm2wjjkcca7u" path="res://core/scripts/buttons/reboot_button.gd" id="2_jag7e"]
+[ext_resource type="Script" uid="uid://ctpy6bvdl7tbd" path="res://core/scripts/buttons/quit_button.gd" id="3_jag7e"]
 [ext_resource type="Script" uid="uid://cxi3vge08aqph" path="res://core/scripts/buttons/update_button.gd" id="3_ldf6x"]
 [ext_resource type="Script" uid="uid://c8ohlqia4w2ce" path="res://core/scripts/buttons/shutdown_button.gd" id="4_iroyi"]
 
@@ -92,19 +93,26 @@ layout_mode = 2
 theme_override_constants/separation = 5
 alignment = 1
 
-[node name="Reboot" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1988035732]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-text = "Reboot"
-script = ExtResource("2_jag7e")
-
 [node name="Update" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1864377460]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Update"
 script = ExtResource("3_ldf6x")
+
+[node name="Quit" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=2021076994]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Quit"
+script = ExtResource("3_jag7e")
+
+[node name="Reboot" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=1988035732]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Reboot"
+script = ExtResource("2_jag7e")
 
 [node name="Shutdown" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/HBoxContainer" unique_id=475547550]
 layout_mode = 2
