@@ -18,12 +18,8 @@ func _reboot() -> void:
 
 func _update() -> void:
 	GlobalLogger.info("Updating driver...")
-
-	# Pull latest code (blocking — shows output)
-	var pull_output = Shell.command("cd /andrewarcade/driver && git pull origin main 2>&1")
-	GlobalLogger.info(pull_output)
-
-	# Relaunch in background, then quit
+	Shell.command("cd /andrewarcade/driver && git pull origin main 2>&1")
 	GlobalLogger.info("Relaunching driver...")
-	OS.create_process("/bin/bash", ["-c", "sleep 3 && /andrewarcade/driver/scripts/launch.sh"])
+	await get_tree().process_frame
+	OS.create_process("/usr/bin/setsid", ["bash", "-c", "sleep 3 && /andrewarcade/driver/scripts/launch.sh"])
 	get_tree().quit()
