@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://3035lfhnj0g" path="res://assets/sprites/update.png" id="9_tghn0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikqim"]
-bg_color = Color(0.744881, 0.23431954, 0.49149996, 1)
+bg_color = Color(0.24115604, 0.24115604, 0.24115601, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_xr4xt"]
 font_size = 18
@@ -29,7 +29,7 @@ outline_size = 3
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_swi0u"]
-bg_color = Color(0.58684456, 0.1604178, 0.3776162, 1)
+bg_color = Color(0.20871013, 0.20871016, 0.20871013, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x7syj"]
 shader = ExtResource("5_but52")
