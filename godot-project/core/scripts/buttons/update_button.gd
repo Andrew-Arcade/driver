@@ -1,10 +1,6 @@
-extends BaseButton
+extends "icon_button.gd"
 
-func _ready() -> void:
-	self.pressed.connect(_on_pressed)
-
-func _on_pressed() -> void:
-	Log.info("Updating driver...")
+func _execute() -> void:
 	CommandQueue.add("cd /andrewarcade/driver && git fetch origin main && git reset --hard origin/main")
 	CommandQueue.add("sudo /andrewarcade/driver/scripts/launch.sh")
 	await get_tree().process_frame

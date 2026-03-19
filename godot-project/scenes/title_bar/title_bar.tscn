@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://ctpy6bvdl7tbd" path="res://core/scripts/buttons/quit_button.gd" id="3_jag7e"]
 [ext_resource type="Script" uid="uid://cxi3vge08aqph" path="res://core/scripts/buttons/update_button.gd" id="3_ldf6x"]
 [ext_resource type="Script" uid="uid://c8ohlqia4w2ce" path="res://core/scripts/buttons/shutdown_button.gd" id="4_iroyi"]
+[ext_resource type="Shader" uid="uid://c0urdfqola6s6" path="res://outline_shader.gdshader" id="6_0s78t"]
 [ext_resource type="Texture2D" uid="uid://3035lfhnj0g" path="res://assets/sprites/update.png" id="6_u3kbg"]
 [ext_resource type="Texture2D" uid="uid://daybi0bg387nq" path="res://assets/sprites/quit.png" id="7_0s78t"]
 [ext_resource type="Texture2D" uid="uid://2xx26jeb3yo2" path="res://assets/sprites/reboot.png" id="8_e7sev"]
@@ -24,6 +25,30 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilpr6"]
 bg_color = Color(0, 0.2784314, 0.69803923, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e7sev"]
+shader = ExtResource("6_0s78t")
+shader_parameter/allow_out_of_bounds = false
+shader_parameter/outline_thickness = 5.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0s78t"]
+shader = ExtResource("6_0s78t")
+shader_parameter/allow_out_of_bounds = false
+shader_parameter/outline_thickness = 5.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_er346"]
+shader = ExtResource("6_0s78t")
+shader_parameter/allow_out_of_bounds = false
+shader_parameter/outline_thickness = 5.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wlbe3"]
+shader = ExtResource("6_0s78t")
+shader_parameter/allow_out_of_bounds = false
+shader_parameter/outline_thickness = 5.0
+shader_parameter/outline_color = Color(0, 0, 0, 1)
 
 [node name="TitleBar" type="Control" unique_id=1386892992]
 custom_minimum_size = Vector2(0, 96)
@@ -104,6 +129,8 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Update"
 script = ExtResource("3_ldf6x")
+log_message = "Updating driver..."
+dim_when_idle = true
 
 [node name="Quit" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/Text Buttons" unique_id=2021076994]
 layout_mode = 2
@@ -111,6 +138,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Quit"
 script = ExtResource("3_jag7e")
+log_message = "Quitting..."
 
 [node name="Reboot" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/Text Buttons" unique_id=1988035732]
 layout_mode = 2
@@ -118,12 +146,14 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 text = "Reboot"
 script = ExtResource("2_jag7e")
+log_message = "Rebooting system..."
 
 [node name="Shutdown" type="Button" parent="HBoxContainer/ButtonArea/MarginContainer/Text Buttons" unique_id=475547550]
 layout_mode = 2
 size_flags_vertical = 4
 text = "Shutdown"
 script = ExtResource("4_iroyi")
+log_message = "Shutting down system..."
 
 [node name="Icon Buttons" type="HBoxContainer" parent="HBoxContainer/ButtonArea/MarginContainer" unique_id=1294763133]
 layout_mode = 2
@@ -131,6 +161,7 @@ theme_override_constants/separation = 5
 alignment = 1
 
 [node name="Update" type="TextureButton" parent="HBoxContainer/ButtonArea/MarginContainer/Icon Buttons" unique_id=2089097582]
+material = SubResource("ShaderMaterial_e7sev")
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -140,8 +171,11 @@ texture_normal = ExtResource("6_u3kbg")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_ldf6x")
+log_message = "Updating driver..."
+dim_when_idle = true
 
 [node name="Quit" type="TextureButton" parent="HBoxContainer/ButtonArea/MarginContainer/Icon Buttons" unique_id=748803062]
+material = SubResource("ShaderMaterial_0s78t")
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_vertical = 4
@@ -150,8 +184,10 @@ texture_normal = ExtResource("7_0s78t")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("3_jag7e")
+log_message = "Quitting..."
 
 [node name="Reboot" type="TextureButton" parent="HBoxContainer/ButtonArea/MarginContainer/Icon Buttons" unique_id=1153906564]
+material = SubResource("ShaderMaterial_er346")
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -161,8 +197,10 @@ texture_normal = ExtResource("8_e7sev")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("2_jag7e")
+log_message = "Rebooting system..."
 
 [node name="Shutdown" type="TextureButton" parent="HBoxContainer/ButtonArea/MarginContainer/Icon Buttons" unique_id=676678357]
+material = SubResource("ShaderMaterial_wlbe3")
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -172,3 +210,4 @@ texture_normal = ExtResource("9_er346")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("4_iroyi")
+log_message = "Shutting down system..."

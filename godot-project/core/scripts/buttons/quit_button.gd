@@ -1,8 +1,4 @@
-extends BaseButton
+extends "icon_button.gd"
 
-func _ready() -> void:
-	self.pressed.connect(_on_pressed)
-
-func _on_pressed() -> void:
-	Log.info("Quitting...")
+func _execute() -> void:
 	get_tree().quit()
