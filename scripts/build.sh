@@ -53,3 +53,10 @@ do
 done
 
 echo -e "\n${GREEN}${BOLD}Build complete!${NC}"
+
+# Commit builds and push
+info "Pushing build"
+git add builds/
+git commit -m "build"
+git push
+success "Pushed"
