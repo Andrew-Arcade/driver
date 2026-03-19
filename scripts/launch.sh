@@ -14,6 +14,7 @@ echo -e "\n${BOLD}Andrew Arcade — Launch${NC}\n"
 
 # Clear any stale queued commands
 > /tmp/andrewarcade-queue
+chown arcade:arcade /tmp/andrewarcade-queue
 
 # Runtime directories — wiped on every reboot, must be recreated
 info "Runtime directories"
