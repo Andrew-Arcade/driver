@@ -20,5 +20,8 @@ func _reboot() -> void:
 
 func _update() -> void:
 	GlobalLogger.info("Updating driver...")
-	OS.create_process("/bin/bash", ["-c", "sleep 3 && /andrewarcade/driver/scripts/launch.sh"])
+	
+	var output = Shell.command("/bin/bash -c sleep 3 && /andrewarcade/driver/scripts/launch.sh")
+	GlobalLogger.info(output)
+	#OS.create_process("/bin/bash", ["-c", "sleep 3 && /andrewarcade/driver/scripts/launch.sh"])
 	#get_tree().quit()
