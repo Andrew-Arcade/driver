@@ -72,3 +72,5 @@ Make sure through this whole thing there is goood loggin going on so i can watch
 I will change the buttons to normal text buttons rn so they should already be changed when you see this.
 
 Scenes may need to be changed adnd stuff to make it clean.
+
+Implament the refresh feature and connect it to the refresh button that is in the title bar
