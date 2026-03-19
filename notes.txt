@@ -10,3 +10,65 @@ Notes
 2. UI changes — considering adding a bar or other layout changes (TBD, sleeping on it)
 
 3. Clean up temp files (cabinet.json.tmp, launch.sh.tmp) once test-cabinet repo is finalized
+
+IDEA THAT IM TYPING UP AT SCHOOL FOR LATER ::::::
+
+This is the order of opporations for the system.
+
+- Drive opens.
+- A base ArcadeManager autoload script runs. This script will manage everything basically but its gonna be broken into multiple scripts if that makes sense.
+- ArcadeManager calls ArcadeFetcher to search for already installed applications ArcadeFetcher returns a list of the names of the repo folder.
+- ArcadeManager has a variable or list that has 2 demensions to make it a sort of table. The first column is the name, the seconds column is the install status.
+- Install status will be a struct or something so it can be CabinetStatus.Installed/UpdateAvailable/NotInstalled.
+- Maybe the table is a dictionary so we can search info bout each item because I will also want to have another colum for its cabinet.json data.
+
+Okay so so far we have opened the driver and we have the currently installed apps in the dictionary as installed (we will check updates later).
+
+- Next ArcadeManager trys to get info from the cache "/andrewarcade/cache/arcade.json" (this will be a localy stored arcade.json for reading).
+- It adds/edits the dictionary with that information. Anything that is not installed will be added as not installed for now.
+
+So now we also have cached data so we can dictionize all cached and installed. To recap stuff that is cached but not installed will be marked as not instaleld.
+
+- ArcadeManager checks for an internet connection via another autoload script (u name it idk).
+- If Network.Connected then we can fetch and cache and update the dictionary via the ArcadeFetcher from the remote.
+- Update the dictionary with that information.
+- If network.connected query each cabinet.json and update the dictionary.
+- If connected check the installed cabinets for updates via a CabinetsManager script.
+- mark them as update if need to.
+
+Now we can display them.
+
+- All buttons for each cabinet hidden by default.
+- Display the cabinet.
+- If installed, show the launch and remove buttons.
+- If not installed show the install button.
+- If update pending, show the update button.
+- They should not interfere with eachother so they can just show and hid seperate.
+
+Now they are displayed.
+
+- The CabinetsManager will have functions that take in the cabinet name (dictionary key is the same ideally).
+- Like install remove update launch functions.
+- The manager will use the key to get the json from the arcademanager to do the things.
+- Then there will be a fucntion on the cabinetmanager (indevidual cabinet) to reupdate the buttons via new data from teh arcade.
+- We will refresh the information and chache.
+
+I think thats all.
+
+Baically i want the buttons and stuff to update nice. Also I think im going to switch back to text buttons as they work better (infact Ill work on that rn).
+When a button is pressed, its text should update to show its working like when i press install it says installing then the buttons show and hide once its intaled.
+Basically i want it to have good feedback as the console will eventually be removed.
+
+I will probably add a resfresh button to update everything.
+
+Try to keep it clean and have simple functions to run and scrips for the different things. I want this to be not cluttered at all.
+
+I want the cabinets to keep updating their display so if something changes it is responsive and displays that. Because if we just load the cabinets then they will be static and we cant do stuff.
+
+This is alot so you may need to parse rewrite and adjust it before implamentation.
+
+Make sure through this whole thing there is goood loggin going on so i can watch whats happenning.
+
+I will change the buttons to normal text buttons rn so they should already be changed when you see this.
+
+Scenes may need to be changed adnd stuff to make it clean.
