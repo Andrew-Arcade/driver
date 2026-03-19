@@ -24,7 +24,7 @@ info "Self-update"
 cd /andrewarcade/driver && sudo -u arcade git pull origin main 2>&1 | dim
 success "Driver up to date"
 
-# Hardware access — ensure seatd socket is accessible for input/output
+# Hardware access — ensure seatd socket iDs accessible for input/output
 info "Hardware access"
 if [ -S /run/seatd.sock ]; then
     sudo chown root:seat /run/seatd.sock
@@ -46,3 +46,6 @@ runuser -u arcade -- env \
     WLR_RENDERER=gles2 \
     GODOT_PLATFORM=wayland \
     /usr/bin/cage -d -s -- "./$BINARY_NAME"
+
+# Process any queued commands (update, reboot, shutdown, etc.)
+bash /andrewarcade/driver/scripts/queue.sh
