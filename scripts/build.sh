@@ -18,6 +18,14 @@ GODOT="godot"
 # Auto-set version to current timestamp
 VERSION_STRING=$(date +'%-y.%-m.%-d.%-H-%-M')
 sed -i "s|config/version=\".*\"|config/version=\"$VERSION_STRING\"|" "$PROJECT_DIR/project.godot"
+# Commit only the version change
+cp "$PROJECT_DIR/project.godot" /tmp/project.godot.bak
+git checkout -- "$PROJECT_DIR/project.godot"
+sed -i "s|config/version=\".*\"|config/version=\"$VERSION_STRING\"|" "$PROJECT_DIR/project.godot"
+git add "$PROJECT_DIR/project.godot"
+git commit -m "v$VERSION_STRING"
+cp /tmp/project.godot.bak "$PROJECT_DIR/project.godot"
+rm /tmp/project.godot.bak
 
 # Read project name and version from project.godot
 GAME_NAME=$(grep "config/name" $PROJECT_DIR/project.godot | cut -d'"' -f2)
