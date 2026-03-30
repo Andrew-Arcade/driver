@@ -4,11 +4,12 @@ signal cabinets_updated
 
 enum CabinetStatus { INSTALLED, UPDATE_AVAILABLE, NOT_INSTALLED }
 
-const CABINETS_DIR := "/andrewarcade/cabinets"
-const CACHE_DIR := "/andrewarcade/cache"
-const CACHE_FILE := "/andrewarcade/cache/arcade.json"
-const ICONS_DIR := "/andrewarcade/cache/icons"
 const ARCADE_JSON_URL := "https://raw.githubusercontent.com/Andrew-Arcade/driver/main/arcade.json"
+
+var CABINETS_DIR: String
+var CACHE_DIR: String
+var CACHE_FILE: String
+var ICONS_DIR: String
 
 var cabinets: Dictionary = {}
 var is_busy: bool = false
@@ -17,15 +18,25 @@ var is_loading: bool = false
 func _ready() -> void:
 	await _initialize()
 
+func _resolve_base_dir() -> String:
+	if DirAccess.dir_exists_absolute("/andrewarcade") or DirAccess.make_dir_recursive_absolute("/andrewarcade") == OK:
+		return "/andrewarcade"
+	return OS.get_user_data_dir() + "/andrewarcade"
+
 func _initialize() -> void:
 	is_loading = true
+	var base_dir := _resolve_base_dir()
+	CABINETS_DIR = base_dir + "/cabinets"
+	CACHE_DIR = base_dir + "/cache"
+	CACHE_FILE = base_dir + "/cache/arcade.json"
+	ICONS_DIR = base_dir + "/cache/icons"
 	DirAccess.make_dir_recursive_absolute(CABINETS_DIR)
 	DirAccess.make_dir_recursive_absolute(ICONS_DIR)
 	_scan_installed()
 	cabinets_updated.emit()
 	_load_cache()
 	cabinets_updated.emit()
-	if await Network.is_connected():
+	if await Network.is_online():
 		await _fetch_remote()
 	is_loading = false
 	cabinets_updated.emit()
@@ -39,7 +50,7 @@ func refresh() -> void:
 	Log.info("Refreshing...")
 	_scan_installed()
 	cabinets_updated.emit()
-	if await Network.is_connected():
+	if await Network.is_online():
 		await _fetch_remote()
 	else:
 		_load_cache()

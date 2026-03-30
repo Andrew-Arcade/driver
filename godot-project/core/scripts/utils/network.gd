@@ -1,6 +1,6 @@
 extends Node
 
-func is_connected() -> bool:
+func is_online() -> bool:
 	var http = HTTPRequest.new()
 	add_child(http)
 
